@@ -1,7 +1,7 @@
 # Личный проект «Кексобукинг» [![Build status][travis-image]][travis-url]
 
 * Студент: [Роман Романов](https://up.htmlacademy.ru/javascript/20/user/526167).
-* Наставник: `Неизвестно`.
+* Наставник: Алексей Балесный.
 
 ---
 
