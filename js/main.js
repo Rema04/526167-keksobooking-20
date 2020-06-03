@@ -8,12 +8,14 @@ var randomIntegerRange = function (min, max) {
   var rand = min + Math.random() * (max - min + 1);
   return Math.round(rand);
 };
+
 //ф-ция для получения случайного значения из массива
 var randomIndexArray = function (array) {
   var index = [Math.ceil(Math.random() * array.length)] - 1;
   return array[index];
 };
 
+//ф-ция создания объекта
 var createOffer = function (pathAvatar) {
   var typesArray = ['palace', 'flat', 'house', 'bungalo'];
   var checkinArray = ['12:00', '13:00', '14:00'];
@@ -48,12 +50,11 @@ var createOffer = function (pathAvatar) {
 };
 
 // массив объявлений
-
 var advertisements = [];
 for(var i = 0; i < AMOUNT_ADVERSTISEMENTS; i++) {
   advertisements.push(createOffer(i+1));
 }
-console.log(advertisements)
+
 var templatePin = document.querySelector('#pin').content
 .querySelector('.map__pin');
 
@@ -72,8 +73,3 @@ var createPin = function () {
 };
 map.appendChild(createPin());
 
-map.addEventListener('click', function(evt){
-  console.log(evt.offsetX)
-})
-
-console.log(createPin());
