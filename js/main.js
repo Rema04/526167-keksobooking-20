@@ -1,66 +1,81 @@
 'use strict';
 var AMOUNT_ADVERSTISEMENTS = 8;
+var TYPES = ['palace', 'flat', 'house', 'bungalo'];
+var CHECKIN_TIMES = ['12:00', '13:00', '14:00'];
+var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var MIN_PRICE = 3000;
+var MAX_PRICE = 50000;
+var MIN_ROOMS = 1;
+var MAX_ROOMS = 3;
+var PHOTOS = [
+  'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
+  'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
+  'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
+];
 var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
-//Служебная функция для получения рандомного числа в диапозоне от min до max
-var randomIntegerRange = function (min, max) {
-  var rand = min + Math.random() * (max - min + 1);
+var getRandomIntegerRange = function (min, max) {
+  var rand = min + Math.random() * (max - min);
   return Math.round(rand);
 };
 
-//ф-ция для получения случайного значения из массива
-var randomIndexArray = function (array) {
-  var index = [Math.ceil(Math.random() * array.length)] - 1;
+var getRandomElementArray = function (array) {
+
+  var index = getRandomIntegerRange(0, array.length - 1);
   return array[index];
 };
 
-//ф-ция создания объекта
+var getSubarray = function (array) {
+  var lengthArray = array.length;
+  var lengthSubarray = getRandomIntegerRange(0, lengthArray - 1);
+  var subarray = [];
+  for (var i = 0; i <= lengthSubarray; i++) {
+    subarray.push(array[i]);
+  }
+  return subarray;
+};
+
 var createOffer = function (pathAvatar) {
-  var typesArray = ['palace', 'flat', 'house', 'bungalo'];
-  var checkinArray = ['12:00', '13:00', '14:00'];
-  var featuresArray = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
-//объект который будет возвращаться из функции
+  var locationX = getRandomIntegerRange(0, map.clientWidth);
+  var locationY = getRandomIntegerRange(130, 630);
+
   var tempOffer = {
     author: {
       avatar: 'img/avatars/user0' + pathAvatar + '.png'
     },
     offer: {
-      title: 'строка с описанием',
-      address: '600, 350',
-      price: randomIntegerRange(5000, 30000),
-      type: randomIndexArray(typesArray),
-      rooms: Math.ceil(Math.random() * 5),
-      guests: Math.ceil(Math.random() * 10),
-      checkin: randomIndexArray(checkinArray),
-      features: randomIndexArray(featuresArray),
-      description: 'строка с описанием',
-      photos: [
-        'http://o0.github.io/assets/images/tokyo/hotel1.jpg',
-        'http://o0.github.io/assets/images/tokyo/hotel2.jpg',
-        'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
-      ]
+      title: 'Уютное жилье',
+      address: locationX + ', ' + locationY, // ? не работает location.x
+      price: getRandomIntegerRange(MIN_PRICE, MAX_PRICE),
+      type: getRandomElementArray(TYPES),
+      rooms: getRandomIntegerRange(MIN_ROOMS, MAX_ROOMS),
+      guests: getRandomIntegerRange(0, 5),
+      checkin: getRandomElementArray(CHECKIN_TIMES),
+      checkout: getRandomElementArray(CHECKIN_TIMES), // ? checkout строка
+      features: getSubarray(FEATURES),
+      description: 'Большая квартира в центре Токио',
+      photos: getSubarray(PHOTOS)
     },
     location: {
-      x: randomIntegerRange(0, map.clientWidth),//ограничение значения X по ширине блока map
-      y: randomIntegerRange(130, 630)//рандом от 130 до 630
+      x: locationX,
+      y: locationY
     }
   };
-  return tempOffer;
+  return tempOffer; // ? может не создавать объект, а сразу возвращать его
 };
 
-// массив объявлений
 var advertisements = [];
-for(var i = 0; i < AMOUNT_ADVERSTISEMENTS; i++) {
-  advertisements.push(createOffer(i+1));
+for (var i = 0; i < AMOUNT_ADVERSTISEMENTS; i++) {
+  advertisements.push(createOffer(i + 1));
 }
 
 var templatePin = document.querySelector('#pin').content
-.querySelector('.map__pin');
+  .querySelector('.map__pin');
 
 var createPin = function () {
   var fragment = document.createDocumentFragment();
-  for (var i = 0; i < advertisements.length; i++) {
+  for (var i = 0; i < advertisements.length; i++) { // жалуется на i
     var pin = templatePin.cloneNode(true);
     var pinAvatar = pin.querySelector('img');
     pinAvatar.src = advertisements[i].author.avatar;
@@ -72,4 +87,3 @@ var createPin = function () {
   return fragment;
 };
 map.appendChild(createPin());
-
