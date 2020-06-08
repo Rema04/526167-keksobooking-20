@@ -31,7 +31,7 @@ var getRandomElement = function (elements) {
 };
 
 var getSliceElements = function (elements) {
-  return elements.slice(0, getRandomIntegerRange(1, elements.length - 1));
+  return elements.slice(0, getRandomIntegerRange(0, elements.length));
 };
 
 var createOffer = function (pathAvatar) {
@@ -94,4 +94,56 @@ var renderFinalPins = function (pins) {
 
 var mapPinsBlock = document.querySelector('.map__pins');
 mapPinsBlock.appendChild(renderFinalPins(advertisements));
+
+var templateAdvertisementsCard = document.querySelector('#card').content
+  .querySelector('.map__card');
+var advertisementСard = templateAdvertisementsCard.cloneNode(true);
+
+advertisementСard.querySelector('.popup__title').textContent =
+advertisements[0].offer.title;
+
+advertisementСard.querySelector('.popup__text--address').textContent =
+advertisements[0].offer.address;
+
+advertisementСard.querySelector('.popup__text--price').textContent =
+advertisements[0].offer.price + ' ₽/ночь';
+
+
+var type = advertisementСard.querySelector('.popup__type');
+var typeValue = advertisements[0].offer.type;
+if (typeValue === 'flat') {
+  type.textContent = 'Квартира';
+}
+if (typeValue === 'bungalo') {
+  type.textContent = 'Бунгало';
+}
+if (typeValue === 'house') {
+  type.textContent = 'Дом';
+}
+if (typeValue === 'palace') {
+  type.textContent = 'Дворец';
+}
+
+advertisementСard.querySelector('.popup__text--capacity').textContent =
+  advertisements[0].offer.rooms + ' комнаты для ' + advertisements[0].offer.guests + ' гостей';
+
+advertisementСard.querySelector('.popup__text--time').textContent =
+  'Заезд после ' + advertisements[0].offer.checkin + ', выезд до ' + advertisements[0].offer.checkout;
+
+advertisementСard.querySelector('.popup__features').textContent =
+  advertisements[0].offer.features;
+
+advertisementСard.querySelector('.popup__description').textContent =
+  advertisements[0].offer.description;
+
+var advertisementСardPhotos = advertisementСard.querySelector('.popup__photos');
+var advertisementСardPhoto = advertisementСardPhotos.querySelector('.popup__photo');
+advertisementСardPhoto.remove();
+for (var i = 0; i < advertisements[0].offer.photos.length; i++) {
+  var photo = advertisementСardPhoto.cloneNode();
+  photo.src = advertisements[0].offer.photos[i];
+  advertisementСardPhotos.appendChild(photo);
+}
+var mapFilters = document.querySelector('.map__filters-container');
+map.append(advertisementСard);
 
