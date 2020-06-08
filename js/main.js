@@ -21,13 +21,17 @@ var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
 var getRandomIntegerRange = function (min, max) {
-  var rand = min + Math.random() * (max - min);
-  return Math.round(rand);
+  var rand = min + Math.random() * (max + 1 - min);
+  return Math.floor(rand);
 };
 
-var getRandomElementArray = function (array) {
-  var index = getRandomIntegerRange(0, array.length - 1);
-  return array[index];
+var getRandomElement = function (elements) {
+  var index = getRandomIntegerRange(0, elements.length - 1);
+  return elements[index];
+};
+
+var getSliceElements = function (elements) {
+  return elements.slice(0, getRandomIntegerRange(1, elements.length - 1));
 };
 
 var createOffer = function (pathAvatar) {
@@ -41,14 +45,14 @@ var createOffer = function (pathAvatar) {
       title: 'Уютное жилье',
       address: locationX + ', ' + locationY,
       price: getRandomIntegerRange(MIN_PRICE, MAX_PRICE),
-      type: getRandomElementArray(TYPES),
+      type: getRandomElement(TYPES),
       rooms: getRandomIntegerRange(MIN_ROOMS, MAX_ROOMS),
       guests: getRandomIntegerRange(MIN_GUESTS, MAX_GUESTS),
-      checkin: getRandomElementArray(CHECKIN_TIMES),
-      checkout: getRandomElementArray(CHECKIN_TIMES),
-      features: FEATURES.slice(0, getRandomIntegerRange(1, FEATURES.length - 1)),
+      checkin: getRandomElement(CHECKIN_TIMES),
+      checkout: getRandomElement(CHECKIN_TIMES),
+      features: getSliceElements(FEATURES),
       description: 'Большая квартира в центре Токио',
-      photos: PHOTOS.slice(0, getRandomIntegerRange(1, PHOTOS.length - 1))
+      photos: getSliceElements(PHOTOS)
     },
     location: {
       x: locationX,
@@ -57,15 +61,15 @@ var createOffer = function (pathAvatar) {
   };
 };
 
-var getAdvertisements = function () {
+var getAdvertisements = function (amount) {
   var advertisements = [];
-  for (var i = 0; i < AMOUNT_ADVERTISEMENTS; i++) {
+  for (var i = 0; i < amount; i++) {
     advertisements.push(createOffer(i + 1));
   }
   return advertisements;
 };
 
-var advertisements = getAdvertisements();
+var advertisements = getAdvertisements(AMOUNT_ADVERTISEMENTS);
 
 var similarPinTemplate = document.querySelector('#pin').content
   .querySelector('.map__pin');
