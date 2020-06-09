@@ -1,8 +1,22 @@
 'use strict';
 var AMOUNT_ADVERTISEMENTS = 8;
+var TITLES = [
+  'Уютное жилье',
+  'Лакшери пейнтхаус',
+  'Хрущевка с косметическим ремонтом',
+  'Дворец для короля',
+  'Флигель для слуги',
+  'Избушка в лесу',
+];
 var TYPES = ['palace', 'flat', 'house', 'bungalo'];
 var CHECKIN_TIMES = ['12:00', '13:00', '14:00'];
 var FEATURES = ['wifi', 'dishwasher', 'parking', 'washer', 'elevator', 'conditioner'];
+var DESCRIPTIONS = [
+  'Большая квартира в центре города',
+  'Маленькая квартирка в тихом районе',
+  'Жилье с видом на океан',
+  'Квартира в историческом районе'
+];
 var MIN_PRICE = 3000;
 var MAX_PRICE = 50000;
 var MIN_ROOMS = 1;
@@ -42,7 +56,7 @@ var createOffer = function (pathAvatar) {
       avatar: 'img/avatars/user0' + pathAvatar + '.png'
     },
     offer: {
-      title: 'Уютное жилье',
+      title: getRandomElement(TITLES),
       address: locationX + ', ' + locationY,
       price: getRandomIntegerRange(MIN_PRICE, MAX_PRICE),
       type: getRandomElement(TYPES),
@@ -51,7 +65,7 @@ var createOffer = function (pathAvatar) {
       checkin: getRandomElement(CHECKIN_TIMES),
       checkout: getRandomElement(CHECKIN_TIMES),
       features: getSliceElements(FEATURES),
-      description: 'Большая квартира в центре Токио',
+      description: getRandomElement(DESCRIPTIONS),
       photos: getSliceElements(PHOTOS)
     },
     location: {
@@ -144,6 +158,5 @@ for (var i = 0; i < advertisements[0].offer.photos.length; i++) {
   photo.src = advertisements[0].offer.photos[i];
   advertisementСardPhotos.appendChild(photo);
 }
-var mapFilters = document.querySelector('.map__filters-container');
-map.append(advertisementСard);
 
+map.insertAdjacentElement('beforebegin', advertisementСard);
