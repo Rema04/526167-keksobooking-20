@@ -31,8 +31,6 @@ var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
-// В : ключи тоже капсом?
-// О :
 var REAL_ESTATE_TYPE = {
   flat: 'Квартира',
   bungalo: 'Бунгало',
@@ -44,8 +42,8 @@ var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
 var getRandomIntegerRange = function (min, max) {
-  var randomInteger = min + Math.random() * (max + 1 - min); // поправить название
-  return Math.floor(randomInteger);
+  var random = min + Math.random() * (max + 1 - min);
+  return Math.floor(random);
 };
 
 var getRandomElement = function (elements) {
@@ -115,6 +113,9 @@ var renderFinalPins = function (pins) {
   return fragment;
 };
 
+var mapPinsBlock = document.querySelector('.map__pins');
+mapPinsBlock.appendChild(renderFinalPins(advertisements));
+
 var deleteInsertionPoint = function (data, insertionPoint) {
   if (data.length === 0) {
     insertionPoint.remove();
@@ -136,14 +137,13 @@ var addPhotoInCard = function (data, insertionPoint) {
   var similarPhoto = insertionPoint.children[0].cloneNode();
   insertionPoint.innerHTML = '';
   for (var i = 0; i < data.length; i++) {
-    var photo = similarPhoto;
+    var photo = similarPhoto.cloneNode();
     photo.src = data[i];
     insertionPoint.appendChild(photo);
   }
 };
 
-var mapPinsBlock = document.querySelector('.map__pins');
-mapPinsBlock.appendChild(renderFinalPins(advertisements));
+
 var templateAdvertisementsCard = document.querySelector('#card').content
   .querySelector('.map__card');
 
