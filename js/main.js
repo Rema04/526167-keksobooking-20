@@ -31,6 +31,8 @@ var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
+// В : ключи тоже капсом?
+// О :
 var REAL_ESTATE_TYPE = {
   flat: 'Квартира',
   bungalo: 'Бунгало',
@@ -42,7 +44,7 @@ var map = document.querySelector('.map');
 map.classList.remove('map--faded');
 
 var getRandomIntegerRange = function (min, max) {
-  var randomInteger = min + Math.random() * (max + 1 - min);
+  var randomInteger = min + Math.random() * (max + 1 - min); // поправить название
   return Math.floor(randomInteger);
 };
 
@@ -113,29 +115,31 @@ var renderFinalPins = function (pins) {
   return fragment;
 };
 
-var createHTMLelement = function (tagName, className) {
-  var element = document.createElement(tagName);
-  element.classList.add(className);
-  return element;
+var deleteInsertionPoint = function (data, insertionPoint) {
+  if (data.length === 0) {
+    insertionPoint.remove();
+  }
 };
 
-var createClassNames = function (data, className) {
-  var basicClass = className;
-  var modifierClasses = [];
+var addFeaturesInCard = function (data, insertionPoint, tagName, className) {
+  deleteInsertionPoint(data, insertionPoint);
+  insertionPoint.innerHTML = '';
   for (var i = 0; i < data.length; i++) {
-    modifierClasses.push(basicClass + data[i]);
+    var newElement = document.createElement(tagName);
+    newElement.classList.add(className, className + '--' + data[i]);
+    insertionPoint.append(newElement);
   }
-  return modifierClasses;
 };
 
-var addFeaturesInCard = function (tagName, classNames) {
-  var fragment = document.createDocumentFragment();
-  for (var i = 0; i < classNames.length; i++) {
-    var element = createHTMLelement(tagName, 'popup__feature');
-    element.classList.add(classNames[i]);
-    fragment.appendChild(element);
+var addPhotoInCard = function (data, insertionPoint) {
+  deleteInsertionPoint(data, insertionPoint);
+  var similarPhoto = insertionPoint.children[0].cloneNode();
+  insertionPoint.innerHTML = '';
+  for (var i = 0; i < data.length; i++) {
+    var photo = similarPhoto;
+    photo.src = data[i];
+    insertionPoint.appendChild(photo);
   }
-  return fragment;
 };
 
 var mapPinsBlock = document.querySelector('.map__pins');
@@ -146,6 +150,8 @@ var templateAdvertisementsCard = document.querySelector('#card').content
 
 var renderAdvertisementCard = function (data) {
   var advertisementСard = templateAdvertisementsCard.cloneNode(true);
+  advertisementСard.querySelector('.popup__avatar').src =
+    data.author.avatar;
 
   advertisementСard.querySelector('.popup__title').textContent =
     data.offer.title;
@@ -156,36 +162,27 @@ var renderAdvertisementCard = function (data) {
   advertisementСard.querySelector('.popup__text--price').textContent =
     data.offer.price + ' ₽/ночь';
 
+  advertisementСard.querySelector('.popup__type').textContent =
+    REAL_ESTATE_TYPE[data.offer.type];
+
   advertisementСard.querySelector('.popup__text--capacity').textContent =
     data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей';
 
   advertisementСard.querySelector('.popup__text--time').textContent =
     'Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout;
 
-  // popup__feature--elevator
-  var featuresAdvertisementCard = addFeaturesInCard('li', createClassNames(data.offer.features, 'popup__feature--'));
-  advertisementСard.querySelector('.popup__features')
-  .appendChild(featuresAdvertisementCard);
-
+  var advertisementСardFeatures =
+    advertisementСard.querySelector('.popup__features');
+  addFeaturesInCard(data.offer.features, advertisementСardFeatures, 'li', 'popup__feature');
 
   advertisementСard.querySelector('.popup__description').textContent =
     data.offer.description;
-  advertisementСard.querySelector('.popup__type').textContent =
-  REAL_ESTATE_TYPE[data.offer.type];
 
   var advertisementСardPhotos =
-  advertisementСard.querySelector('.popup__photos');
+    advertisementСard.querySelector('.popup__photos');
+  addPhotoInCard(data.offer.photos, advertisementСardPhotos);
 
-  var advertisementСardPhoto =
-  advertisementСardPhotos.querySelector('.popup__photo');
-  advertisementСardPhoto.remove();
-  for (var i = 0; i < advertisements[0].offer.photos.length; i++) {
-    var photo = advertisementСardPhoto.cloneNode();
-    photo.src = advertisements[0].offer.photos[i];
-    advertisementСardPhotos.appendChild(photo);
-  }
   return advertisementСard;
 };
-
-map.insertAdjacentElement('beforebegin', renderAdvertisementCard(advertisements[0]));
-
+var mapFiltersContainer = map.querySelector('.map__filters-container');
+mapFiltersContainer.insertAdjacentElement('beforebegin', renderAdvertisementCard(advertisements[0]));
