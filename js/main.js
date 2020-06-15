@@ -256,15 +256,13 @@ mainPin.addEventListener('keydown', onMainPinEnterPress);
 var compareRoomsAndGuestsValues = function () {
   if (roomInput.value === guestInput.value) {
     roomInput.setCustomValidity('');
-  } else if (roomInput.value === '100' && guestInput.value !== '100') {
-    roomInput.setCustomValidity('Данное жилье не для гостей');
-  } else if (roomInput.value === '1' && guestInput.value !== 1) {
+  } else if (roomInput.value === '1' && guestInput.value !== '1') {
     roomInput.setCustomValidity('Данное жилье предназначено для 1 гостя');
-  } else if (roomInput.value === '2' && guestInput.value === '3' || guestInput.value === '100') {
-    roomInput.setCustomValidity('Данное жилье предназначено для одного или двух гостей');
-  } else if (roomInput.value === '3' && guestInput.value === '100') {
-    roomInput.setCustomValidity('Данное жилье для одного, двоих или троих гостей');
-  } else if (roomInput.value === '3' && guestInput.value === '2') {
+  } else if (roomInput.value === '2' && guestInput.value > '2' || guestInput.value === '0') {
+    roomInput.setCustomValidity('Данное жилье для 1 или 2 гостей');
+  } else if (roomInput.value === '3' && guestInput.value === '0') {
+    roomInput.setCustomValidity('Данное жилье для гостей');
+  } else {
     roomInput.setCustomValidity('');
   }
 };
