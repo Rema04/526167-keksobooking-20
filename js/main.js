@@ -31,6 +31,13 @@ var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
+var ROOMS_CUSTOM_TEXT = {
+  '0': 'Данное жилье не для гостей',
+  '1': 'Данное жилье для 1 гостя',
+  '2': 'Данное жилье для 1 или 2 гостей',
+  '3': 'Данное жилье для 1-3 гостей'
+};
+
 // var REAL_ESTATE_TYPE = {
 //   flat: 'Квартира',
 //   bungalo: 'Бунгало',
@@ -252,20 +259,37 @@ var onMainPinLeftButtonMouseHandler = function (evt) {
 mainPin.addEventListener('mousedown', onMainPinLeftButtonMouseHandler);
 mainPin.addEventListener('keydown', onMainPinEnterPress);
 
-
 var compareRoomsAndGuestsValues = function () {
   if (roomInput.value === guestInput.value) {
     roomInput.setCustomValidity('');
-  } else if (roomInput.value === '1' && guestInput.value !== '1') {
-    roomInput.setCustomValidity('Данное жилье предназначено для 1 гостя');
-  } else if (roomInput.value === '2' && guestInput.value > '2' || guestInput.value === '0') {
-    roomInput.setCustomValidity('Данное жилье для 1 или 2 гостей');
-  } else if (roomInput.value === '3' && guestInput.value === '0') {
-    roomInput.setCustomValidity('Данное жилье для гостей');
-  } else {
+  }
+  if (roomInput.value === '100' && guestInput.value === '0') {
+    roomInput.setCustomValidity('');
+  }
+  if (roomInput.value === '100' && guestInput.value !== '0') {
+    roomInput.setCustomValidity(ROOMS_CUSTOM_TEXT['0']);
+  }
+  if (roomInput.value === '1' && guestInput.value !== '1') {
+    roomInput.setCustomValidity(ROOMS_CUSTOM_TEXT['1']);
+  }
+  if (roomInput.value === '2' && guestInput.value > '2') {
+    roomInput.setCustomValidity(ROOMS_CUSTOM_TEXT['2']);
+  }
+  if (roomInput.value === '2' && guestInput.value === '0') {
+    roomInput.setCustomValidity(ROOMS_CUSTOM_TEXT['2']);
+  }
+  if (roomInput.value === '3' && guestInput.value === '0') {
+    roomInput.setCustomValidity(ROOMS_CUSTOM_TEXT['3']);
+  }
+  if (roomInput.value === '3' && guestInput.value !== '0') {
+    roomInput.setCustomValidity('');
+  }
+  if (roomInput.value === '2' && guestInput.value === '1') {
     roomInput.setCustomValidity('');
   }
 };
-
-roomInput.addEventListener('change', compareRoomsAndGuestsValues);
+// в определенном случае не работало 2 комнаты - 1 гость,
+// как я заметил это происходило если предыдущее поле гостей было "не для гостей"
+// поэтому в последняя проверка в функции может показаться лишней, но только так я исправил ошибку
 guestInput.addEventListener('change', compareRoomsAndGuestsValues);
+roomInput.addEventListener('change', compareRoomsAndGuestsValues);
