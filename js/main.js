@@ -31,23 +31,11 @@ var PHOTOS = [
   'http://o0.github.io/assets/images/tokyo/hotel3.jpg'
 ];
 
-var ROOMS_CUSTOM_TEXT = {
-  '0': 'Данное жилье не для гостей',
-  '1': 'Данное жилье для 1 гостя',
-  '2': 'Данное жилье для 1 или 2 гостей',
-  '3': 'Данное жилье для 1-3 гостей'
-};
-
 // var REAL_ESTATE_TYPE = {
 //   flat: 'Квартира',
 //   bungalo: 'Бунгало',
 //   house: 'Дом',
 //   palace: 'Дворец'
-// };
-
-// var TITLE_LENGTH = {
-//   min: 5,
-//   max: 100
 // };
 
 // var MIN_PRICE_DEPENDENCE_TYPE = {
@@ -56,6 +44,23 @@ var ROOMS_CUSTOM_TEXT = {
 //   'house': 5000,
 //   'palace': 10000
 // };
+var MAIN_PIN_PART = {
+  center: 'center',
+  tip: 'tip'
+};
+var TIP_HEIGHT = 22;
+var ENTER_KEY = 'Enter';
+var LEFT_MOUSE_BUTTON = 0;
+var ERROR_BORDER = {
+  color: 'red',
+  width: '2px',
+  addBorder: function (element) {
+    element.style.border = this.width + ' solid ' + this.color;
+  },
+  removeBorder: function (element) {
+    element.style.border = '';
+  }
+};
 
 var map = document.querySelector('.map');
 // var mapFiltersContainer = map.querySelector('.map__filters-container');
@@ -203,26 +208,25 @@ var guestInput = offerForm.capacity;
 // var timeInInput = offerForm.timein;
 // var timeOutInput = offerForm.timeout;
 var mainPin = document.querySelector('.map__pin--main');
-var tipHeight = 22;
 
-function getCoords(elem) {
-  var box = elem.getBoundingClientRect();
+var getCoords = function (element) {
   return {
-    top: box.top + pageYOffset,
-    left: box.left + pageXOffset
+    top: element.offsetTop,
+    left: element.offsetLeft
   };
-}
-var getAddress = function (pinFragment) {
+};
+
+var getAddress = function (pinPart) {
   var addressCoordinates;
-  if (pinFragment === 'center') {
+  if (pinPart === MAIN_PIN_PART.center) {
     addressCoordinates = Math.round(Number(getCoords(mainPin).left) + mainPin.clientWidth / 2) + ', ' + Math.round(Number(getCoords(mainPin).top + mainPin.clientHeight / 2));
-  } else if (pinFragment === 'tip') {
-    addressCoordinates = Math.round(Number(getCoords(mainPin).left) + mainPin.clientWidth / 2) + ', ' + Math.round(Number(getCoords(mainPin).top + mainPin.clientHeight + tipHeight));
+  } else if (pinPart === MAIN_PIN_PART.tip) {
+    addressCoordinates = Math.round(Number(getCoords(mainPin).left) + mainPin.clientWidth / 2) + ', ' + Math.round(Number(getCoords(mainPin).top + mainPin.clientHeight + TIP_HEIGHT));
   }
   return addressCoordinates;
 };
 
-addressInput.value = getAddress('center');
+addressInput.value = getAddress(MAIN_PIN_PART.center);
 
 var changeDisabledForm = function (form) {
   var formElements = form.children;
@@ -231,65 +235,53 @@ var changeDisabledForm = function (form) {
   }
 };
 changeDisabledForm(offerForm);
-
+var mapPins = renderFinalPins(offers);
 var mainPinActivateHandler = function () {
   map.classList.remove('map--faded');
   offerForm.classList.remove('ad-form--disabled');
   changeDisabledForm(offerForm);
-  addressInput.value = getAddress('tip');
-  mapPinsBlock.appendChild(renderFinalPins(offers));
+  addressInput.value = getAddress(MAIN_PIN_PART.tip);
+  mapPinsBlock.appendChild(mapPins);
   mainPin.removeEventListener('mousedown', mainPinActivateHandler);
   mainPin.removeEventListener('keydown', onMainPinEnterPress);
 };
 mainPin.addEventListener('keydown', function (evt) {
-  if (evt.key === 'Enter') {
+  if (evt.key === ENTER_KEY) {
     mainPinActivateHandler();
   }
 });
 var onMainPinEnterPress = function (evt) {
-  if (evt.key === 'Enter') {
+  if (evt.key === ENTER_KEY) {
     mainPinActivateHandler();
   }
 };
 var onMainPinLeftButtonMouseHandler = function (evt) {
-  if (evt.button === 0) {
+  if (evt.button === LEFT_MOUSE_BUTTON) {
     mainPinActivateHandler();
   }
 };
 mainPin.addEventListener('mousedown', onMainPinLeftButtonMouseHandler);
 mainPin.addEventListener('keydown', onMainPinEnterPress);
 
-var compareRoomsAndGuestsValues = function () {
-  if (roomInput.value === guestInput.value) {
+var validateRoomsAndGuestsValues = function () {
+  if (guestInput.value > roomInput.value && guestInput.value !== '0' && roomInput.value !== '100') {
+    roomInput.setCustomValidity('Количество гостей не может превышать количество комнат');
+    ERROR_BORDER.addBorder(roomInput);
+  } else if (guestInput.value === '0' && roomInput.value !== '100') {
+    roomInput.setCustomValidity('Выберите 100 комнат');
+    ERROR_BORDER.addBorder(roomInput);
+  } else if (guestInput.value !== '0' && roomInput.value === '100') {
+    roomInput.setCustomValidity('Данное жилье не для гостей');
+    ERROR_BORDER.addBorder(roomInput);
+  } else if (guestInput.value === '0' && roomInput.value === '100') {
     roomInput.setCustomValidity('');
-  }
-  if (roomInput.value === '100' && guestInput.value === '0') {
+    ERROR_BORDER.removeBorder(roomInput);
+  } else {
     roomInput.setCustomValidity('');
-  }
-  if (roomInput.value === '100' && guestInput.value !== '0') {
-    roomInput.setCustomValidity(ROOMS_CUSTOM_TEXT['0']);
-  }
-  if (roomInput.value === '1' && guestInput.value !== '1') {
-    roomInput.setCustomValidity(ROOMS_CUSTOM_TEXT['1']);
-  }
-  if (roomInput.value === '2' && guestInput.value > '2') {
-    roomInput.setCustomValidity(ROOMS_CUSTOM_TEXT['2']);
-  }
-  if (roomInput.value === '2' && guestInput.value === '0') {
-    roomInput.setCustomValidity(ROOMS_CUSTOM_TEXT['2']);
-  }
-  if (roomInput.value === '3' && guestInput.value === '0') {
-    roomInput.setCustomValidity(ROOMS_CUSTOM_TEXT['3']);
-  }
-  if (roomInput.value === '3' && guestInput.value !== '0') {
-    roomInput.setCustomValidity('');
-  }
-  if (roomInput.value === '2' && guestInput.value === '1') {
-    roomInput.setCustomValidity('');
+    ERROR_BORDER.removeBorder(roomInput);
   }
 };
-// в определенном случае не работало 2 комнаты - 1 гость,
-// как я заметил это происходило если предыдущее поле гостей было "не для гостей"
-// поэтому в последняя проверка в функции может показаться лишней, но только так я исправил ошибку
-guestInput.addEventListener('change', compareRoomsAndGuestsValues);
-roomInput.addEventListener('change', compareRoomsAndGuestsValues);
+var guestsChangeHandler = validateRoomsAndGuestsValues;
+var roomsChangeHandler = validateRoomsAndGuestsValues;
+guestInput.addEventListener('change', guestsChangeHandler);
+roomInput.addEventListener('change', roomsChangeHandler);
