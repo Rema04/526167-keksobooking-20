@@ -1249,3 +1249,7 @@ fieldset {
 .hidden {
   display: none;
 }
+
+.error-border {
+  border: 2px solid #ff0000 !important;
+}
