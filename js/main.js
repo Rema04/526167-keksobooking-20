@@ -44,23 +44,14 @@ var PHOTOS = [
 //   'house': 5000,
 //   'palace': 10000
 // };
-var MAIN_PIN_PART = {
-  center: 'center',
-  tip: 'tip'
+var MainPinPart = {
+  CENTER: 'center',
+  TIP: 'tip'
 };
 var TIP_HEIGHT = 22;
 var ENTER_KEY = 'Enter';
+// var ESCAPE_KEY = 'Escape';
 var LEFT_MOUSE_BUTTON = 0;
-var ERROR_BORDER = {
-  color: 'red',
-  width: '2px',
-  addBorder: function (element) {
-    element.style.border = this.width + ' solid ' + this.color;
-  },
-  removeBorder: function (element) {
-    element.style.border = '';
-  }
-};
 
 var map = document.querySelector('.map');
 // var mapFiltersContainer = map.querySelector('.map__filters-container');
@@ -196,17 +187,16 @@ var renderFinalPins = function (pins) {
 //   addPhotoInCard(data.offer.photos, offerPhoto);
 //   return offerСard;
 // };
-// mapFiltersContainer.before(renderOfferCard(offers[0]));
 
 var offerForm = document.querySelector('.ad-form');
-// var titleInput = offerForm.title;
-var addressInput = offerForm.address;
-// var typeInput = offerForm.type;
-// var priceInput = offerForm.price;
-var roomInput = offerForm.rooms;
-var guestInput = offerForm.capacity;
-// var timeInInput = offerForm.timein;
-// var timeOutInput = offerForm.timeout;
+// var titleField = offerForm.title;
+var addressField = offerForm.address;
+// var typeField = offerForm.type;
+// var priceField = offerForm.price;
+var roomField = offerForm.rooms;
+var guestField = offerForm.capacity;
+// var timeInField = offerForm.timein;
+// var timeOutField = offerForm.timeout;
 var mainPin = document.querySelector('.map__pin--main');
 
 var getCoords = function (element) {
@@ -217,16 +207,11 @@ var getCoords = function (element) {
 };
 
 var getAddress = function (pinPart) {
-  var addressCoordinates;
-  if (pinPart === MAIN_PIN_PART.center) {
-    addressCoordinates = Math.round(Number(getCoords(mainPin).left) + mainPin.clientWidth / 2) + ', ' + Math.round(Number(getCoords(mainPin).top + mainPin.clientHeight / 2));
-  } else if (pinPart === MAIN_PIN_PART.tip) {
-    addressCoordinates = Math.round(Number(getCoords(mainPin).left) + mainPin.clientWidth / 2) + ', ' + Math.round(Number(getCoords(mainPin).top + mainPin.clientHeight + TIP_HEIGHT));
-  }
-  return addressCoordinates;
+  var diff = pinPart === MainPinPart.CENTER ? mainPin.clientHeight / 2 : mainPin.clientHeight + TIP_HEIGHT;
+  return Math.round(Number(getCoords(mainPin).left) + mainPin.clientWidth / 2) + ', ' + Math.round(Number(getCoords(mainPin).top + diff));
 };
 
-addressInput.value = getAddress(MAIN_PIN_PART.center);
+addressField.value = getAddress(MainPinPart.CENTER);
 
 var changeDisabledForm = function (form) {
   var formElements = form.children;
@@ -235,53 +220,53 @@ var changeDisabledForm = function (form) {
   }
 };
 changeDisabledForm(offerForm);
+
 var mapPins = renderFinalPins(offers);
-var mainPinActivateHandler = function () {
+
+var activateMapAndForm = function () {
   map.classList.remove('map--faded');
   offerForm.classList.remove('ad-form--disabled');
   changeDisabledForm(offerForm);
-  addressInput.value = getAddress(MAIN_PIN_PART.tip);
+  addressField.value = getAddress(MainPinPart.TIP);
   mapPinsBlock.appendChild(mapPins);
-  mainPin.removeEventListener('mousedown', mainPinActivateHandler);
-  mainPin.removeEventListener('keydown', onMainPinEnterPress);
+  mainPin.removeEventListener('keydown', mainPinKeydownHandler);
+  mainPin.removeEventListener('mousedown', mainPinMousedownHandler);
 };
-mainPin.addEventListener('keydown', function (evt) {
+var mainPinKeydownHandler = function (evt) {
   if (evt.key === ENTER_KEY) {
-    mainPinActivateHandler();
-  }
-});
-var onMainPinEnterPress = function (evt) {
-  if (evt.key === ENTER_KEY) {
-    mainPinActivateHandler();
+    activateMapAndForm();
   }
 };
-var onMainPinLeftButtonMouseHandler = function (evt) {
+var mainPinMousedownHandler = function (evt) {
   if (evt.button === LEFT_MOUSE_BUTTON) {
-    mainPinActivateHandler();
+    activateMapAndForm();
   }
 };
-mainPin.addEventListener('mousedown', onMainPinLeftButtonMouseHandler);
-mainPin.addEventListener('keydown', onMainPinEnterPress);
+
+mainPin.addEventListener('mousedown', mainPinMousedownHandler);
+mainPin.addEventListener('keydown', mainPinKeydownHandler);
 
 var validateRoomsAndGuestsValues = function () {
-  if (guestInput.value > roomInput.value && guestInput.value !== '0' && roomInput.value !== '100') {
-    roomInput.setCustomValidity('Количество гостей не может превышать количество комнат');
-    ERROR_BORDER.addBorder(roomInput);
-  } else if (guestInput.value === '0' && roomInput.value !== '100') {
-    roomInput.setCustomValidity('Выберите 100 комнат');
-    ERROR_BORDER.addBorder(roomInput);
-  } else if (guestInput.value !== '0' && roomInput.value === '100') {
-    roomInput.setCustomValidity('Данное жилье не для гостей');
-    ERROR_BORDER.addBorder(roomInput);
-  } else if (guestInput.value === '0' && roomInput.value === '100') {
-    roomInput.setCustomValidity('');
-    ERROR_BORDER.removeBorder(roomInput);
+  if (guestField.value > roomField.value && guestField.value !== '0' && roomField.value !== '100') {
+    roomField.setCustomValidity('Количество гостей не может превышать количество комнат');
+    roomField.classList.add('error-border');
+  } else if (guestField.value === '0' && roomField.value !== '100') {
+    roomField.setCustomValidity('Выберите 100 комнат');
+    roomField.classList.add('error-border');
+  } else if (guestField.value !== '0' && roomField.value === '100') {
+    roomField.setCustomValidity('Данное жилье не для гостей');
+    roomField.classList.add('error-border');
   } else {
-    roomInput.setCustomValidity('');
-    ERROR_BORDER.removeBorder(roomInput);
+    roomField.setCustomValidity('');
+    roomField.classList.remove('error-border');
   }
 };
-var guestsChangeHandler = validateRoomsAndGuestsValues;
-var roomsChangeHandler = validateRoomsAndGuestsValues;
-guestInput.addEventListener('change', guestsChangeHandler);
-roomInput.addEventListener('change', roomsChangeHandler);
+var guestFieldChangeHandler = function () {
+  validateRoomsAndGuestsValues();
+};
+var roomFieldChangeHandler = function () {
+  validateRoomsAndGuestsValues();
+};
+guestField.addEventListener('change', guestFieldChangeHandler);
+roomField.addEventListener('change', roomFieldChangeHandler);
+
