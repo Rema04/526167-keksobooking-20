@@ -270,7 +270,6 @@ var roomFieldChangeHandler = function () {
 guestField.addEventListener('change', guestFieldChangeHandler);
 roomField.addEventListener('change', roomFieldChangeHandler);
 
-//
 var validateTitleField = function () {
   var valueLength = titleField.value.length;
   var minLengthValue = titleField.getAttribute('minlength');
@@ -306,7 +305,7 @@ var validateTypeField = function () {
 var typeFieldChangeHandler = function () {
   validateTypeField();
 };
-// не получается экранировать чтоб тип жилья был в кавычках
+
 var validatePriceField = function () {
   var maxPrice = priceField.getAttribute('max');
   var priceValue = +priceField.value;
@@ -326,9 +325,11 @@ var validatePriceField = function () {
   }
 };
 var priceFieldChangeHandler = function () {
-  validateTypeField();
+  validatePriceField();
 };
-
+var priceFieldInvalidHandler = function () {
+  validatePriceField();
+};
 var validateTimeInField = function () {
   timeOutField.selectedIndex = timeInField.selectedIndex;
 };
@@ -346,19 +347,23 @@ var timeOutFieldChangeHandler = function () {
 
 titleField.addEventListener('invalid', titleFieldInvalidHandler);
 titleField.addEventListener('input', titleFieldInputHandler);
-
 typeField.addEventListener('change', typeFieldChangeHandler);
-
 priceField.addEventListener('change', priceFieldChangeHandler);
-priceField.addEventListener('invalid', priceFieldChangeHandler);
-
+priceField.addEventListener('invalid', priceFieldInvalidHandler);
 timeInField.addEventListener('change', timeInFieldChangeHandler);
 timeOutField.addEventListener('change', timeOutFieldChangeHandler);
 
+var openOfferCard = function (card) {
+  mapFiltersContainer.before(card);
+};
 var deleteCard = function (card) {
   if (card) {
     card.remove();
   }
+  document.removeEventListener('keydown', documentKeydownHandler);
+};
+var closeCardButtonMousedownHandler = function () {
+  deleteCard(currentCard);
 };
 var documentKeydownHandler = function (evt) {
   if (evt.key === ESCAPE_KEY) {
@@ -370,13 +375,12 @@ var addPinClickHandler = function (pin, card) {
   pin.addEventListener('click', function () {
     deleteCard(currentCard);
     currentCard = card;
-    mapFiltersContainer.before(card);
+    openOfferCard(card);
     document.addEventListener('keydown', documentKeydownHandler);
   });
   var closeCardButton = card.querySelector('.popup__close');
-  closeCardButton.addEventListener('click', function () {
-    card.remove();
-  });
+  closeCardButton.
+  addEventListener('mousedown', closeCardButtonMousedownHandler);
 };
 
 for (var i = 0; i < mapPins.children.length; i++) {
@@ -384,49 +388,3 @@ for (var i = 0; i < mapPins.children.length; i++) {
   addPinClickHandler(pin, renderOfferCard(offers[i]));
 }
 
-
-mainPin.addEventListener('mousedown', function (evt) {
-  var shiftX = evt.clientX - mainPin.getBoundingClientRect().left;
-  var shiftY = evt.clientY - mainPin.getBoundingClientRect().top;
-  mainPin.style.position = 'absolute';
-  var moveMainPin = function (evt) {
-    mainPin.style.left = evt.pageX - shiftX + 'px';
-    mainPin.style.top = evt.pageY - shiftY + 'px';
-    addressField.value = getAddress(MainPinPart.TIP);
-  };
-  moveMainPin(evt.pageX, evt.pageY);
-  map.addEventListener('mousemove', moveMainPin);
-  mainPin.addEventListener('mouseup', function () {
-    map.removeEventListener('mousemove', moveMainPin);
-  });
-});
-
-mainPin.ondragstart = function () {
-  return false;
-};
-
-
-var successModal = document.querySelector('#success')
-  .content.querySelector('.success');
-
-var succesText = successModal.querySelector('.success__message');
-var showMessageSubmit = function (message, insertionPoint) {
-  insertionPoint.append(message);
-};
-offerForm.addEventListener('submit', function (evt) {
-  evt.preventDefault();
-  showMessageSubmit(successModal, map);
-  offerForm.reset();
-});
-
-
-successModal.addEventListener('click', function (evt) {
-  if (evt.target !== succesText) {
-    successModal.remove();
-  }
-});
-document.addEventListener('keydown', function (evt) {
-  if (evt.key === 'Escape') {
-    successModal.remove();
-  }
-});
