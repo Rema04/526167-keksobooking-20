@@ -246,19 +246,24 @@ var mainPinMousedownHandler = function (evt) {
 mainPin.addEventListener('mousedown', mainPinMousedownHandler);
 mainPin.addEventListener('keydown', mainPinKeydownHandler);
 
+var addErrorField = function (field, errorText) {
+  field.classList.add('error-border');
+  field.setCustomValidity(errorText);
+};
+var removeErrorField = function (field) {
+  field.classList.remove('error-border');
+  field.setCustomValidity('');
+};
+
 var validateRoomsAndGuestsValues = function () {
   if (guestField.value > roomField.value && guestField.value !== '0' && roomField.value !== '100') {
-    roomField.setCustomValidity('Количество гостей не может превышать количество комнат');
-    roomField.classList.add('error-border');
+    addErrorField(roomField, 'Количество гостей не может превышать количество комнат');
   } else if (guestField.value === '0' && roomField.value !== '100') {
-    roomField.setCustomValidity('Выберите 100 комнат');
-    roomField.classList.add('error-border');
+    addErrorField(roomField, 'Выберите 100 комнат');
   } else if (guestField.value !== '0' && roomField.value === '100') {
-    roomField.setCustomValidity('Данное жилье не для гостей');
-    roomField.classList.add('error-border');
+    addErrorField(roomField, 'Данное жилье не для гостей');
   } else {
-    roomField.setCustomValidity('');
-    roomField.classList.remove('error-border');
+    removeErrorField(roomField);
   }
 };
 var guestFieldChangeHandler = function () {
@@ -275,19 +280,13 @@ var validateTitleField = function () {
   var minLengthValue = titleField.getAttribute('minlength');
   var maxLengthValue = titleField.getAttribute('maxlength');
   if (titleField.validity.valueMissing) {
-    titleField.classList.add('error-border');
-    titleField.setCustomValidity('Поле обязательно к заполнению');
+    addErrorField(titleField, 'Поле обязательно к заполнению');
   } else if (titleField.validity.tooShort) {
-    titleField.classList.add('error-border');
-    titleField
-      .setCustomValidity('Минимальная длина — ' + minLengthValue + ' символов. Вам не хватает еще ' + (minLengthValue - valueLength));
+    addErrorField(titleField, 'Минимальная длина — ' + minLengthValue + ' символов. Вам не хватает еще ' + (minLengthValue - valueLength));
   } else if (titleField.validity.tooLong) {
-    titleField.classList.add('error-border');
-    titleField
-      .setCustomValidity('Максимальная длина — ' + maxLengthValue + ' символов. Удалите ' + (valueLength - maxLengthValue));
+    addErrorField(titleField, 'Максимальная длина — ' + maxLengthValue + ' символов. Удалите ' + (valueLength - maxLengthValue));
   } else {
-    titleField.setCustomValidity('');
-    titleField.classList.remove('error-border');
+    removeErrorField(titleField);
   }
 };
 var titleFieldInputHandler = function () {
@@ -301,6 +300,7 @@ var validateTypeField = function () {
   priceField.min = MIN_PRICE_DEPENDENCE_TYPE[typeField.value];
   priceField.setAttribute('placeholder', MIN_PRICE_DEPENDENCE_TYPE[typeField.value]);
   priceField.value = '';
+  removeErrorField(priceField);
 };
 var typeFieldChangeHandler = function () {
   validateTypeField();
@@ -311,17 +311,13 @@ var validatePriceField = function () {
   var priceValue = +priceField.value;
   var typeValue = typeField.value;
   if (priceValue > maxPrice) {
-    priceField.setCustomValidity('Максимальное значение - ' + maxPrice);
-    priceField.classList.add('error-border');
+    addErrorField(priceField, 'Максимальное значение - ' + maxPrice);
   } else if (priceValue < MIN_PRICE_DEPENDENCE_TYPE[typeValue]) {
-    priceField.setCustomValidity('Минимальное значение для  ' + REAL_ESTATE_TYPE[typeValue] + ' - ' + MIN_PRICE_DEPENDENCE_TYPE[typeValue]);
-    priceField.classList.add('error-border');
+    addErrorField(priceField, 'Минимальное значение для  ' + REAL_ESTATE_TYPE[typeValue] + ' - ' + MIN_PRICE_DEPENDENCE_TYPE[typeValue]);
   } else if (priceValue === '') {
-    priceValue.setCustomValidity('Поле обязательно к заполнению');
-    priceField.classList.add('error-border');
+    addErrorField(priceField, 'Поле обязательно к заполнению');
   } else {
-    priceField.setCustomValidity('');
-    priceField.classList.remove('error-border');
+    removeErrorField(priceField);
   }
 };
 var priceFieldChangeHandler = function () {
@@ -330,6 +326,10 @@ var priceFieldChangeHandler = function () {
 var priceFieldInvalidHandler = function () {
   validatePriceField();
 };
+var priceFieldInputHandler = function () {
+  validatePriceField();
+};
+
 var validateTimeInField = function () {
   timeOutField.selectedIndex = timeInField.selectedIndex;
 };
@@ -340,7 +340,6 @@ var timeInFieldChangeHandler = function () {
 var validateTimeOutField = function () {
   timeInField.selectedIndex = timeOutField.selectedIndex;
 };
-
 var timeOutFieldChangeHandler = function () {
   validateTimeOutField();
 };
@@ -350,6 +349,7 @@ titleField.addEventListener('input', titleFieldInputHandler);
 typeField.addEventListener('change', typeFieldChangeHandler);
 priceField.addEventListener('change', priceFieldChangeHandler);
 priceField.addEventListener('invalid', priceFieldInvalidHandler);
+priceField.addEventListener('input', priceFieldInputHandler);
 timeInField.addEventListener('change', timeInFieldChangeHandler);
 timeOutField.addEventListener('change', timeOutFieldChangeHandler);
 
