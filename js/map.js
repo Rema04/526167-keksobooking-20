@@ -6,18 +6,14 @@
   var mapPinsBlock = document.querySelector('.map__pins');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
 
-  var getAddress = function (pinPart) {
-    var diff = pinPart === window.pin.MainPinPart.CENTER ? mainPin.clientHeight / 2 : mainPin.clientHeight + window.util.TIP_HEIGHT;
-    return Math.round(Number(window.util.getCoords(mainPin).left) + mainPin.clientWidth / 2) + ', ' + Math.round(Number(window.util.getCoords(mainPin).top + diff));
-  };
-
-  window.form.changeDisabledForm(window.form.offerForm);
+  window.util.changeDisabledForm(window.form.fields);
 
   var activateMapAndForm = function () {
     map.classList.remove('map--faded');
-    window.form.offerForm.classList.remove('ad-form--disabled');
-    window.form.changeDisabledForm(window.form.offerForm);
-    window.form.addressField.value = getAddress(window.pin.MainPinPart.TIP);
+    window.form.fields.classList.remove('ad-form--disabled');
+    window.util.changeDisabledForm(window.form.fields);
+    window.form.addressField.value =
+    window.form.getAddress(window.pin.part.TIP);
     mapPinsBlock.appendChild(mapPins);
     mainPin.removeEventListener('keydown', mainPinKeydownHandler);
     mainPin.removeEventListener('mousedown', mainPinMousedownHandler);
@@ -37,7 +33,7 @@
   mainPin.addEventListener('keydown', mainPinKeydownHandler);
 
   var offers = window.pin.getOffers(window.data.AMOUNT_OFFER);
-  var mapPins = window.pin.renderFinalPins(offers);
+  var mapPins = window.pin.render(offers);
   var openOfferCard = function (card) {
     mapFiltersContainer.before(card);
   };
@@ -70,11 +66,7 @@
 
   for (var i = 0; i < mapPins.children.length; i++) {
     var pin = mapPins.children[i];
-    addPinClickHandler(pin, window.card.renderOfferCard(offers[i]));
+    addPinClickHandler(pin, window.card.render(offers[i]));
   }
-
-  window.map = {
-    getAddress: getAddress
-  };
 
 })();

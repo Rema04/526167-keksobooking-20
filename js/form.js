@@ -11,6 +11,8 @@
   var guestField = offerForm.capacity;
   var timeInField = offerForm.timein;
   var timeOutField = offerForm.timeout;
+  var mainPin = document.querySelector('.map__pin--main');
+
 
   var validateRoomsAndGuestsValues = function () {
     if (guestField.value > roomField.value && guestField.value !== '0' && roomField.value !== '100') {
@@ -101,13 +103,6 @@
     validateTimeOutField();
   };
 
-  var changeDisabledForm = function (form) {
-    var formElements = form.children;
-    for (var i = 0; i < formElements.length; i++) {
-      formElements[i].toggleAttribute('disabled');
-    }
-  };
-
   titleField.addEventListener('invalid', titleFieldInvalidHandler);
   titleField.addEventListener('input', titleFieldInputHandler);
   typeField.addEventListener('change', typeFieldChangeHandler);
@@ -117,11 +112,18 @@
   timeInField.addEventListener('change', timeInFieldChangeHandler);
   timeOutField.addEventListener('change', timeOutFieldChangeHandler);
 
+  var getAddress = function (pinPart) {
+    var diff = pinPart === window.pin.part.CENTER ? mainPin.clientHeight / 2 : mainPin.clientHeight + window.util.TIP_HEIGHT;
+    return Math.round(Number(window.util.getCoords(mainPin).left) + mainPin.clientWidth / 2) + ', ' + Math.round(Number(window.util.getCoords(mainPin).top + diff));
+  };
+
+  addressField.value = getAddress(window.pin.part.CENTER);
+
 
   window.form = {
-    offerForm: offerForm,
+    fields: offerForm,
     addressField: addressField,
-    changeDisabledForm: changeDisabledForm
+    getAddress: getAddress
   };
 
 })();

@@ -53,7 +53,7 @@
   };
 
   window.card = {
-    renderOfferCard: renderOfferCard
+    render: renderOfferCard
   };
 
 })();

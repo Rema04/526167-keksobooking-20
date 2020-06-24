@@ -43,6 +43,13 @@
     return data;
   };
 
+  var changeDisabledForm = function (form) {
+    var formElements = form.children;
+    for (var i = 0; i < formElements.length; i++) {
+      formElements[i].toggleAttribute('disabled');
+    }
+  };
+
   window.util = {
     TIP_HEIGHT: TIP_HEIGHT,
     ENTER_KEY: ENTER_KEY,
@@ -54,7 +61,8 @@
     addErrorField: addErrorField,
     removeErrorField: removeErrorField,
     getCoords: getCoords,
-    deleteInsertionPoint: deleteInsertionPoint
+    deleteInsertionPoint: deleteInsertionPoint,
+    changeDisabledForm: changeDisabledForm
   };
 
 })();

@@ -33,8 +33,8 @@
   };
 
   window.pin = {
-    MainPinPart: MainPinPart,
-    renderFinalPins: renderFinalPins,
+    part: MainPinPart,
+    render: renderFinalPins,
     getOffers: getOffers
   };
 
