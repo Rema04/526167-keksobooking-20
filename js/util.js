@@ -50,6 +50,13 @@
     }
   };
 
+
+  var isEscapePress = function (evt, action) {
+    if (evt.key === ENTER_KEY) {
+      action();
+    }
+  };
+
   window.util = {
     TIP_HEIGHT: TIP_HEIGHT,
     ENTER_KEY: ENTER_KEY,
@@ -62,7 +69,9 @@
     removeErrorField: removeErrorField,
     getCoords: getCoords,
     deleteInsertionPoint: deleteInsertionPoint,
-    changeDisabledForm: changeDisabledForm
+    changeDisabledForm: changeDisabledForm,
+    isEscapePress: isEscapePress
   };
+
 
 })();
