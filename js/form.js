@@ -103,6 +103,11 @@
     validateTimeOutField();
   };
 
+  var offerFormSubmitHandler = function () {
+
+  };
+  offerForm.addEventListener('submit', offerFormSubmitHandler);
+
   titleField.addEventListener('invalid', titleFieldInvalidHandler);
   titleField.addEventListener('input', titleFieldInputHandler);
   typeField.addEventListener('change', typeFieldChangeHandler);
