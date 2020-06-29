@@ -70,7 +70,7 @@
     getCoords: getCoords,
     deleteInsertionPoint: deleteInsertionPoint,
     changeDisabledForm: changeDisabledForm,
-    isEscapePress: isEscapePress
+    isEscapePress: isEscapePress,
   };
 
 

@@ -29,6 +29,16 @@
     mainPin.removeEventListener('keydown', mainPinKeydownHandler);
     mainPin.removeEventListener('mousedown', mainPinMousedownHandler);
   };
+
+  window.disableMapAndForm = function () {
+    map.classList.add('map--faded');
+    window.form.fields.classList.add('ad-form--disabled');
+    window.util.changeDisabledForm(window.form.fields);
+    window.form.addressField.value =
+    window.form.getAddress(window.pin.part.CENTER);
+    window.util.changeDisabledForm(filters);
+    mainPin.removeEventListener('mousemove', window.mainPinMousemoveHandler)//?
+  };
   var mainPinKeydownHandler = function (evt) {
     if (evt.key === window.util.ENTER_KEY) {
       activateMapAndForm();

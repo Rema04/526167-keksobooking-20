@@ -1165,6 +1165,8 @@ fieldset {
   vertical-align: middle;
 
   background-color: rgba(0, 0, 0, 0.8);
+
+  z-index: 10;
 }
 
 .success__message,

@@ -12,7 +12,7 @@
   var timeInField = offerForm.timein;
   var timeOutField = offerForm.timeout;
   var mainPin = document.querySelector('.map__pin--main');
-
+  var offerFormResetButton = document.querySelector('.ad-form__reset');
 
   var validateRoomsAndGuestsValues = function () {
     if (guestField.value > roomField.value && guestField.value !== '0' && roomField.value !== '100') {
@@ -103,11 +103,6 @@
     validateTimeOutField();
   };
 
-  var offerFormSubmitHandler = function () {
-
-  };
-  offerForm.addEventListener('submit', offerFormSubmitHandler);
-
   titleField.addEventListener('invalid', titleFieldInvalidHandler);
   titleField.addEventListener('input', titleFieldInputHandler);
   typeField.addEventListener('change', typeFieldChangeHandler);
@@ -123,7 +118,26 @@
   };
 
   addressField.value = getAddress(window.pin.part.CENTER);
+  var onSuccess = function () {
+    window.uploadOffer(new FormData(offerForm), function () {
+      window.modal.show(window.modal.success, offerForm);
+    }, onError);
+  };
+  var onError = function () {
+    window.modal.show(window.modal.error, offerForm);
+  };
+  var offerFormSubmitHandler = function (evt) {
+    onSuccess();
+    window.disableMapAndForm();
+    evt.preventDefault();
+  };
+  offerForm.addEventListener('submit', offerFormSubmitHandler);
 
+  var offerFormResetHandler = function () {
+    offerForm.reset();
+  };
+
+  offerFormResetButton.addEventListener('click', offerFormResetHandler);
 
   window.form = {
     fields: offerForm,
@@ -132,3 +146,13 @@
   };
 
 })();
+
+var onSuccess = function (data) {
+  var mapPins = window.pin.render(data);
+  for (var i = 0; i < mapPins.children.length; i++) {
+    var pin = mapPins.children[i];
+    addPinClickHandler(pin, window.card.render(data[i]));
+  }
+  mapPinsBlock.appendChild(mapPins);
+  window.util.changeDisabledForm(filters);
+};
