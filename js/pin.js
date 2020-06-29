@@ -32,6 +32,7 @@
     return fragment;
   };
 
+
   window.pin = {
     part: MainPinPart,
     render: renderFinalPins,

@@ -21,20 +21,21 @@
         x: moveEvt.clientX,
         y: moveEvt.clientY
       };
+      var centerMainPinX = Math.floor(mainPin.clientWidth / 2);
 
-      if (mainPin.offsetLeft < -Math.round(mainPin.clientWidth / 2)) {
-        mainPin.style.left = -Math.round(mainPin.clientWidth / 2) + 'px';
+      if (mainPin.offsetLeft < -centerMainPinX) {
+        mainPin.style.left = -centerMainPinX + 'px';
       }
-      if (mainPin.offsetLeft > Math.round(map.clientWidth - mainPin.clientWidth / 2)) {
-        mainPin.style.left = Math.round(map.clientWidth - mainPin.clientWidth / 2) + 'px';
+      if (mainPin.offsetLeft > map.clientWidth - centerMainPinX) {
+        mainPin.style.left = map.clientWidth - mainPin.clientWidth / 2 + 'px';
       }
+
       if (mainPin.offsetTop < window.data.MIN_COORDINATES_Y - (mainPin.clientHeight + window.util.TIP_HEIGHT)) {
         mainPin.style.top = window.data.MIN_COORDINATES_Y - (mainPin.clientHeight + window.util.TIP_HEIGHT) + 'px';
       }
       if (mainPin.offsetTop > window.data.MAX_COORDINATES_Y - (mainPin.clientHeight + window.util.TIP_HEIGHT)) {
         mainPin.style.top = window.data.MAX_COORDINATES_Y - (mainPin.clientHeight + window.util.TIP_HEIGHT) + 'px';
       }
-      mainPin.style.zIndex = 1000;
       mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
       mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';
       addressField.value = window.form.getAddress(window.pin.part.TIP);
