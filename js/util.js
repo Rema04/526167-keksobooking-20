@@ -52,7 +52,7 @@
 
 
   var isEscapePress = function (evt, action) {
-    if (evt.key === ENTER_KEY) {
+    if (evt.key === ESCAPE_KEY) {
       action();
     }
   };
