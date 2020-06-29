@@ -1,7 +1,8 @@
 'use strict';
 
 (function () {
-
+  var URL_REQUEST = 'https://javascript.pages.academy/keksobooking/data';
+  var TIME_DELAY = 10000;
   window.loadOffers = function (onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -20,9 +21,9 @@
       onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
     });
 
-    xhr.timeout = 10000;
+    xhr.timeout = TIME_DELAY;
 
-    xhr.open('GET', 'https://javascript.pages.academy/keksobooking/data');
+    xhr.open('GET', URL_REQUEST);
     xhr.send();
   };
 
