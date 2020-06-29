@@ -146,13 +146,3 @@
   };
 
 })();
-
-var onSuccess = function (data) {
-  var mapPins = window.pin.render(data);
-  for (var i = 0; i < mapPins.children.length; i++) {
-    var pin = mapPins.children[i];
-    addPinClickHandler(pin, window.card.render(data[i]));
-  }
-  mapPinsBlock.appendChild(mapPins);
-  window.util.changeDisabledForm(filters);
-};
