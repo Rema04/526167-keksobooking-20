@@ -13,6 +13,7 @@
   var timeOutField = offerForm.timeout;
   var mainPin = document.querySelector('.map__pin--main');
   var offerFormResetButton = document.querySelector('.ad-form__reset');
+  var mainElement = document.querySelector('main');
 
   var validateRoomsAndGuestsValues = function () {
     if (guestField.value > roomField.value && guestField.value !== '0' && roomField.value !== '100') {
@@ -118,25 +119,28 @@
   };
 
   addressField.value = getAddress(window.pin.part.CENTER);
+
   var onSuccess = function () {
     window.uploadOffer(new FormData(offerForm), function () {
-      window.modal.show(window.modal.success, offerForm);
+      window.modal.show(window.modal.success, mainElement);
     }, onError);
   };
   var onError = function () {
-    window.modal.show(window.modal.error, offerForm);
+    window.modal.show(window.modal.error, mainElement);
   };
+
   var offerFormSubmitHandler = function (evt) {
     onSuccess();
-    window.disableMapAndForm();
+    window.map.disable();
     evt.preventDefault();
+    offerForm.reset();
   };
   offerForm.addEventListener('submit', offerFormSubmitHandler);
 
   var offerFormResetHandler = function () {
     offerForm.reset();
+    window.map.disable();
   };
-
   offerFormResetButton.addEventListener('click', offerFormResetHandler);
 
   window.form = {

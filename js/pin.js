@@ -7,12 +7,12 @@
   var similarPinTemplate = document.querySelector('#pin').content
     .querySelector('.map__pin');
 
-  var renderSimilarPin = function (advertisementItem) {
+  var renderSimilarPin = function (offersItem) {
     var pin = similarPinTemplate.cloneNode(true);
-    pin.style.left = advertisementItem.location.x - (pin.clientWidth / 2) + 'px';
-    pin.style.top = advertisementItem.location.y - pin.clientHeight + 'px';
-    pin.querySelector('img').src = advertisementItem.author.avatar;
-    pin.querySelector('img').alt = advertisementItem.title;
+    pin.style.left = offersItem.location.x - (pin.clientWidth / 2) + 'px';
+    pin.style.top = offersItem.location.y - pin.clientHeight + 'px';
+    pin.querySelector('img').src = offersItem.author.avatar;
+    pin.querySelector('img').alt = offersItem.title;
     return pin;
   };
 
@@ -32,10 +32,14 @@
     return fragment;
   };
 
+  var removeFinalPins = function (pins) {
+    pins.remove();
+  };
 
   window.pin = {
     part: MainPinPart,
     render: renderFinalPins,
+    remove: removeFinalPins,
     getOffers: getOffers
   };
 

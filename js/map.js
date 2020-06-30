@@ -10,6 +10,10 @@
   window.util.changeDisabledForm(window.form.fields);
   window.util.changeDisabledForm(filters);
 
+  var putMainPinCenterMap = function () {
+    mainPin.style.top = map.clientHeight / 2 + 'px';
+    mainPin.style.left = map.clientWidth / 2 + 'px';
+  };
   var onSuccess = function (data) {
     var mapPins = window.pin.render(data);
     for (var i = 0; i < mapPins.children.length; i++) {
@@ -30,14 +34,15 @@
     mainPin.removeEventListener('mousedown', mainPinMousedownHandler);
   };
 
-  window.disableMapAndForm = function () {
+  var disableMapAndForm = function () {
     map.classList.add('map--faded');
     window.form.fields.classList.add('ad-form--disabled');
     window.util.changeDisabledForm(window.form.fields);
     window.form.addressField.value =
     window.form.getAddress(window.pin.part.CENTER);
     window.util.changeDisabledForm(filters);
-    mainPin.removeEventListener('mousemove', window.mainPinMousemoveHandler)//?
+    putMainPinCenterMap();
+    mainPin.removeEventListener('mousemove', window.mainPinMousemoveHandler);
   };
   var mainPinKeydownHandler = function (evt) {
     if (evt.key === window.util.ENTER_KEY) {
@@ -83,5 +88,9 @@
       addEventListener('mousedown', closeCardButtonMousedownHandler);
   };
 
+  window.map = {
+    disable: disableMapAndForm,
+    active: activateMapAndForm,
+  };
 
 })();

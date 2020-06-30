@@ -3,41 +3,38 @@
 (function () {
   var successModal = document.querySelector('#success')
     .content.querySelector('.success');
-  var succesMessage = successModal.querySelector('.success__message');
 
   var errorModal = document.querySelector('#error')
-  .content.querySelector('.error');
-  var errorMessage = errorModal.querySelector('.error__message');
+    .content.querySelector('.error');
   var errorMessageCloseButton = errorModal.querySelector('.error__button');
 
-  var showMessageSubmit = function (message, insertionPoint) {
-    insertionPoint.append(message);
+  var closeModal = function (modal) {
+    modal.remove();
+  };
+  var errorMessageCloseButtonMousedownHandler = function () {
+    closeModal();
   };
 
-  successModal.addEventListener('click', function (evt) {
-    if (evt.target !== succesMessage) {
-      successModal.remove();
-    }
-  });
+  var showModal = function (modal, insertionPoint) {
+    insertionPoint.append(modal);
 
-  errorModal.addEventListener('click', function (evt) {
-    if (evt.target !== errorMessage) {
-      errorModal.remove();
-    }
-  });
+    document.addEventListener('keydown', function (evt) {
+      if (evt.key === window.util.ESCAPE_KEY) {
+        closeModal(modal);
+      }
+    });
+    document.addEventListener('mousedown', function (evt) {
+      if (evt.target !== modal.children[0]) {
+        modal.remove();
+      }
+    });
+  };
 
-  document.addEventListener('keydown', function (evt) {
-    window.util.isEscapePress(evt, successModal.remove());
-  });
-  document.addEventListener('keydown', function (evt) {
-    window.util.isEscapePress(evt, errorModal.remove());
-  });
-  errorMessageCloseButton.addEventListener('click', function () {
-    errorModal.remove();
-  });
+  errorMessageCloseButton.addEventListener('mousedown', errorMessageCloseButtonMousedownHandler);
 
   window.modal = {
-    show: showMessageSubmit,
+    show: showModal,
+    close: closeModal,
     success: successModal,
     error: errorModal
   };
