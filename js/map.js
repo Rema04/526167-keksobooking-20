@@ -33,7 +33,6 @@
     mainPin.removeEventListener('keydown', mainPinKeydownHandler);
     mainPin.removeEventListener('mousedown', mainPinMousedownHandler);
   };
-
   var disableMapAndForm = function () {
     map.classList.add('map--faded');
     window.form.fields.classList.add('ad-form--disabled');
@@ -43,6 +42,7 @@
     window.util.changeDisabledForm(filters);
     putMainPinCenterMap();
     mainPin.removeEventListener('mousemove', window.mainPinMousemoveHandler);
+    deleteCard(currentCard);
   };
   var mainPinKeydownHandler = function (evt) {
     if (evt.key === window.util.ENTER_KEY) {
