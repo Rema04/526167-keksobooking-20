@@ -142,6 +142,7 @@
     window.util.removeErrorField(roomField);
     window.util.removeErrorField(priceField);
     window.util.removeErrorField(titleField);
+    mainPin.addEventListener('mousedown', window.map.activateHandler);
   };
   offerFormResetButton.addEventListener('click', offerFormResetHandler);
 

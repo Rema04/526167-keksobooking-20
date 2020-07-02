@@ -92,6 +92,7 @@
   window.map = {
     disable: disableMapAndForm,
     active: activateMapAndForm,
+    activateHandler: mainPinMousedownHandler
   };
 
 })();
