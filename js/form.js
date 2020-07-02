@@ -139,6 +139,9 @@
   var offerFormResetHandler = function () {
     offerForm.reset();
     window.map.disable();
+    window.util.removeErrorField(roomField);
+    window.util.removeErrorField(priceField);
+    window.util.removeErrorField(titleField);
   };
   offerFormResetButton.addEventListener('click', offerFormResetHandler);
 
@@ -149,3 +152,4 @@
   };
 
 })();
+

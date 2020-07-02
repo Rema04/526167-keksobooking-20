@@ -25,6 +25,7 @@
   };
   var activateMapAndForm = function () {
     map.classList.remove('map--faded');
+    mainPin.classList.add('map__pin--main');
     window.form.fields.classList.remove('ad-form--disabled');
     window.util.changeDisabledForm(window.form.fields);
     window.form.addressField.value =
