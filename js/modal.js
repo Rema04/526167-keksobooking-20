@@ -7,30 +7,37 @@
   var errorModal = document.querySelector('#error')
     .content.querySelector('.error');
   var errorMessageCloseButton = errorModal.querySelector('.error__button');
-
   var closeModal = function (modal) {
     modal.remove();
+    document.removeEventListener('keydown', modalKeydownHandler);
+    document.removeEventListener('mousedown', modalMousedownHandler);
+    errorMessageCloseButton.removeEventListener('mousedown', errorMessageCloseButtonMousedownHandler);
   };
   var errorMessageCloseButtonMousedownHandler = function () {
-    closeModal();
+    closeModal(currentModal);
+  };
+
+  var currentModal;
+  var modalKeydownHandler = function (evt) {
+    if (evt.key === window.util.ESCAPE_KEY) {
+      closeModal(currentModal);
+    }
+  };
+
+  var modalMousedownHandler = function (evt) {
+    if (evt.target !== currentModal.children[0]) {
+      closeModal(currentModal);
+    }
   };
 
   var showModal = function (modal, insertionPoint) {
     insertionPoint.append(modal);
-
-    document.addEventListener('keydown', function (evt) {
-      if (evt.key === window.util.ESCAPE_KEY) {
-        closeModal(modal);
-      }
-    });
-    document.addEventListener('mousedown', function (evt) {
-      if (evt.target !== modal.children[0]) {
-        modal.remove();
-      }
-    });
+    currentModal = modal;
+    document.addEventListener('keydown', modalKeydownHandler);
+    document.addEventListener('mousedown', modalMousedownHandler);
+    errorMessageCloseButton.addEventListener('mousedown', errorMessageCloseButtonMousedownHandler);
   };
 
-  errorMessageCloseButton.addEventListener('mousedown', errorMessageCloseButtonMousedownHandler);
 
   window.modal = {
     show: showModal,
@@ -39,4 +46,3 @@
     error: errorModal
   };
 })();
-

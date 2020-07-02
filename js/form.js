@@ -124,6 +124,7 @@
       window.modal.show(window.modal.success, mainElement);
       offerForm.reset();
       window.map.disable();
+      mainPin.addEventListener('mousedown', window.map.activateHandler);
     }, abortSendingFormData);
   };
   var abortSendingFormData = function () {
@@ -143,6 +144,7 @@
     window.util.removeErrorField(priceField);
     window.util.removeErrorField(titleField);
     mainPin.addEventListener('mousedown', window.map.activateHandler);
+    window.map.putMainPinCenter();
   };
   offerFormResetButton.addEventListener('mousedown', offerFormResetHandler);
 

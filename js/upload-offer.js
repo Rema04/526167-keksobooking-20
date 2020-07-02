@@ -2,7 +2,7 @@
 
 (function () {
   var URL = 'https://javascript.pages.academy/keksobooking';
-
+  var TIME_DELAY = 1000;
   window.uploadOffer = function (data, onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -13,8 +13,16 @@
       } else {
         onError();
       }
+      xhr.addEventListener('error', function () {
+        onError('Произошла ошибка соединения');
+      });
+
+      xhr.addEventListener('timeout', function () {
+        onError('Запрос не успел выполниться за ' + xhr.timeout + 'мс');
+      });
     });
 
+    xhr.timeout = TIME_DELAY;
     xhr.open('POST', URL);
     xhr.send(data);
   };

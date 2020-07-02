@@ -6,13 +6,13 @@
   var mapPinsBlock = document.querySelector('.map__pins');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
   var filters = mapFiltersContainer.querySelector('form');
-
   window.util.changeDisabledForm(window.form.fields);
   window.util.changeDisabledForm(filters);
 
   var putMainPinCenterMap = function () {
     mainPin.style.top = map.clientHeight / 2 + 'px';
     mainPin.style.left = map.clientWidth / 2 + 'px';
+    window.form.addressField.value = window.form.getAddress(window.pin.part.CENTER);
   };
   var onSuccess = function (data) {
     var mapPins = window.pin.render(data);
@@ -43,7 +43,6 @@
     window.util.changeDisabledForm(filters);
     putMainPinCenterMap();
     deleteCard(currentCard);
-    mainPin.removeEventListener('mousemove', window.mainPinMousemoveHandler);
     var pinCollections = document.querySelectorAll('.map__pin');
     for (var i = 0; i < pinCollections.length; i++) {
       if (!pinCollections[i].classList.contains('map__pin--main')) {
@@ -98,7 +97,8 @@
   window.map = {
     disable: disableMapAndForm,
     active: activateMapAndForm,
-    activateHandler: mainPinMousedownHandler
+    activateHandler: mainPinMousedownHandler,
+    putMainPinCenter: putMainPinCenterMap
   };
 
 })();
