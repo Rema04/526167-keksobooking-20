@@ -59,7 +59,6 @@
   var validateTypeField = function () {
     priceField.min = window.data.MIN_PRICE_DEPENDENCE_TYPE[typeField.value];
     priceField.setAttribute('placeholder', window.data.MIN_PRICE_DEPENDENCE_TYPE[typeField.value]);
-    priceField.value = '';
     window.util.removeErrorField(priceField);
   };
   var typeFieldChangeHandler = function () {
