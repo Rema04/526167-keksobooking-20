@@ -43,6 +43,7 @@
     window.util.changeDisabledForm(filters);
     putMainPinCenterMap();
     deleteCard(currentCard);
+    mainPin.removeEventListener('mousemove', window.mainPinMousemoveHandler);
     var pinCollections = document.querySelectorAll('.map__pin');
     for (var i = 0; i < pinCollections.length; i++) {
       if (!pinCollections[i].classList.contains('map__pin--main')) {

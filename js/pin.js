@@ -32,14 +32,9 @@
     return fragment;
   };
 
-  var removeFinalPins = function (pins) {
-    pins.remove();
-  };
-
   window.pin = {
     part: MainPinPart,
     render: renderFinalPins,
-    remove: removeFinalPins,
     getOffers: getOffers
   };
 

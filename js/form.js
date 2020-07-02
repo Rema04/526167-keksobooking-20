@@ -137,12 +137,14 @@
   offerForm.addEventListener('submit', offerFormSubmitHandler);
 
   var offerFormResetHandler = function () {
+    offerForm.reset();
+    window.map.disable();
     window.util.removeErrorField(roomField);
     window.util.removeErrorField(priceField);
     window.util.removeErrorField(titleField);
     mainPin.addEventListener('mousedown', window.map.activateHandler);
   };
-  offerFormResetButton.addEventListener('click', offerFormResetHandler);
+  offerFormResetButton.addEventListener('mousedown', offerFormResetHandler);
 
   window.form = {
     fields: offerForm,
