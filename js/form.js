@@ -119,26 +119,24 @@
 
   addressField.value = getAddress(window.pin.part.CENTER);
 
-  var onSuccess = function () {
+  var sendFormData = function () {
     window.uploadOffer(new FormData(offerForm), function () {
       window.modal.show(window.modal.success, mainElement);
-    }, onError);
+      offerForm.reset();
+      window.map.disable();
+    }, abortSendingFormData);
   };
-  var onError = function () {
+  var abortSendingFormData = function () {
     window.modal.show(window.modal.error, mainElement);
   };
 
   var offerFormSubmitHandler = function (evt) {
-    onSuccess();
-    window.map.disable();
+    sendFormData();
     evt.preventDefault();
-    offerForm.reset();
   };
   offerForm.addEventListener('submit', offerFormSubmitHandler);
 
   var offerFormResetHandler = function () {
-    offerForm.reset();
-    window.map.disable();
     window.util.removeErrorField(roomField);
     window.util.removeErrorField(priceField);
     window.util.removeErrorField(titleField);

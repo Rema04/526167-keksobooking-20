@@ -42,7 +42,6 @@
     window.form.getAddress(window.pin.part.CENTER);
     window.util.changeDisabledForm(filters);
     putMainPinCenterMap();
-    mainPin.removeEventListener('mousemove', window.mainPinMousemoveHandler);
     deleteCard(currentCard);
     var pinCollections = document.querySelectorAll('.map__pin');
     for (var i = 0; i < pinCollections.length; i++) {
