@@ -136,8 +136,10 @@
     evt.preventDefault();
   };
   offerForm.addEventListener('submit', offerFormSubmitHandler);
-
-  var offerFormResetHandler = function () {
+  var resetFormAndMap = function () {
+    // validateTypeField должна менять плейсхолдер цены
+    // в соответствии с типом жилья
+    validateTypeField();
     offerForm.reset();
     window.map.disable();
     window.util.removeErrorField(roomField);
@@ -146,6 +148,10 @@
     mainPin.addEventListener('mousedown', window.map.activateHandler);
     window.map.putMainPinCenter();
   };
+  var offerFormResetHandler = function () {
+    resetFormAndMap();
+  };
+
   offerFormResetButton.addEventListener('mousedown', offerFormResetHandler);
 
   window.form = {

@@ -12,7 +12,9 @@
   var putMainPinCenterMap = function () {
     mainPin.style.top = map.clientHeight / 2 + 'px';
     mainPin.style.left = map.clientWidth / 2 + 'px';
-    window.form.addressField.value = window.form.getAddress(window.pin.part.CENTER);
+    // координаты по X теперь зависит от ширины окна браузера
+    window.form.addressField.value =
+    window.form.getAddress(window.pin.part.CENTER);
   };
   var onSuccess = function (data) {
     var mapPins = window.pin.render(data);
