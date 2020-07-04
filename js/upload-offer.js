@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  var URL = 'https://javascript.pages.academy/keksobooking';
+  var URL = 'https://javascript.pages.academy/keksobookin';
   var TIME_DELAY = 1000;
   window.uploadOffer = function (data, onSuccess, onError) {
     var xhr = new XMLHttpRequest();

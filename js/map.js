@@ -14,7 +14,7 @@
     mainPin.style.left = map.clientWidth / 2 + 'px';
     // координаты по X теперь зависит от ширины окна браузера
     window.form.addressField.value =
-    window.form.getAddress(window.pin.part.CENTER);
+      window.form.getAddress(window.pin.part.CENTER);
   };
   var onSuccess = function (data) {
     var mapPins = window.pin.render(data);
@@ -27,11 +27,10 @@
   };
   var activateMapAndForm = function () {
     map.classList.remove('map--faded');
-    mainPin.classList.add('map__pin--main');
     window.form.fields.classList.remove('ad-form--disabled');
     window.util.changeDisabledForm(window.form.fields);
     window.form.addressField.value =
-    window.form.getAddress(window.pin.part.TIP);
+      window.form.getAddress(window.pin.part.TIP);
     window.loadOffers(onSuccess);
     mainPin.removeEventListener('keydown', mainPinKeydownHandler);
     mainPin.removeEventListener('mousedown', mainPinMousedownHandler);
@@ -41,15 +40,14 @@
     window.form.fields.classList.add('ad-form--disabled');
     window.util.changeDisabledForm(window.form.fields);
     window.form.addressField.value =
-    window.form.getAddress(window.pin.part.CENTER);
+      window.form.getAddress(window.pin.part.CENTER);
     window.util.changeDisabledForm(filters);
     putMainPinCenterMap();
     deleteCard(currentCard);
-    var pinCollections = document.querySelectorAll('.map__pin');
+    var pinCollections =
+      document.querySelectorAll('.map__pin:not(.map__pin--main)');
     for (var i = 0; i < pinCollections.length; i++) {
-      if (!pinCollections[i].classList.contains('map__pin--main')) {
-        pinCollections[i].remove();
-      }
+      pinCollections[i].remove();
     }
   };
   var mainPinKeydownHandler = function (evt) {
@@ -99,7 +97,8 @@
   window.map = {
     disable: disableMapAndForm,
     active: activateMapAndForm,
-    activateHandler: mainPinMousedownHandler,
+    activateMousedownHandler: mainPinMousedownHandler,
+    activateKeydownHandler: mainPinKeydownHandler,
     putMainPinCenter: putMainPinCenterMap
   };
 

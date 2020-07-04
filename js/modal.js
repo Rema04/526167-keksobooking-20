@@ -10,10 +10,10 @@
   var closeModal = function (modal) {
     modal.remove();
     document.removeEventListener('keydown', modalKeydownHandler);
-    document.removeEventListener('mousedown', modalMousedownHandler);
-    errorMessageCloseButton.removeEventListener('mousedown', errorMessageCloseButtonMousedownHandler);
+    document.removeEventListener('click', modalClickHandler);
+    errorMessageCloseButton.removeEventListener('click', errorMessageCloseButtonClickHandler);
   };
-  var errorMessageCloseButtonMousedownHandler = function () {
+  var errorMessageCloseButtonClickHandler = function () {
     closeModal(currentModal);
   };
 
@@ -24,7 +24,7 @@
     }
   };
 
-  var modalMousedownHandler = function (evt) {
+  var modalClickHandler = function (evt) {
     if (evt.target !== currentModal.children[0]) {
       closeModal(currentModal);
     }
@@ -34,8 +34,8 @@
     insertionPoint.append(modal);
     currentModal = modal;
     document.addEventListener('keydown', modalKeydownHandler);
-    document.addEventListener('mousedown', modalMousedownHandler);
-    errorMessageCloseButton.addEventListener('mousedown', errorMessageCloseButtonMousedownHandler);
+    document.addEventListener('click', modalClickHandler);
+    errorMessageCloseButton.addEventListener('click', errorMessageCloseButtonClickHandler);
   };
 
 

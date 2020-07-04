@@ -124,10 +124,11 @@
       window.modal.show(window.modal.success, mainElement);
       offerForm.reset();
       window.map.disable();
-      mainPin.addEventListener('mousedown', window.map.activateHandler);
-    }, abortSendingFormData);
+      mainPin.addEventListener('mousedown', window.map.activateMousedownHandler);
+      mainPin.addEventListener('keydown', window.map.abc);
+    }, showErrorModal);
   };
-  var abortSendingFormData = function () {
+  var showErrorModal = function () {
     window.modal.show(window.modal.error, mainElement);
   };
 
@@ -137,22 +138,21 @@
   };
   offerForm.addEventListener('submit', offerFormSubmitHandler);
   var resetFormAndMap = function () {
-    // validateTypeField должна менять плейсхолдер цены
-    // в соответствии с типом жилья
-    validateTypeField();
     offerForm.reset();
+    validateTypeField();
     window.map.disable();
     window.util.removeErrorField(roomField);
     window.util.removeErrorField(priceField);
     window.util.removeErrorField(titleField);
-    mainPin.addEventListener('mousedown', window.map.activateHandler);
+    mainPin.addEventListener('mousedown', window.map.activateMousedownHandler);
+    mainPin.addEventListener('keydown', window.map.activateKeydownHandler);
     window.map.putMainPinCenter();
   };
-  var offerFormResetHandler = function () {
+  var offerFormResetButtonClickHandler = function () {
     resetFormAndMap();
   };
 
-  offerFormResetButton.addEventListener('mousedown', offerFormResetHandler);
+  offerFormResetButton.addEventListener('click', offerFormResetButtonClickHandler);
 
   window.form = {
     fields: offerForm,
