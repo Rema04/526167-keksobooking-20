@@ -31,7 +31,7 @@
     window.util.changeDisabledForm(window.form.fields);
     window.form.addressField.value =
       window.form.getAddress(window.pin.part.TIP);
-    window.loadOffers(onSuccess);
+    window.backend.load(onSuccess);
     mainPin.removeEventListener('keydown', mainPinKeydownHandler);
     mainPin.removeEventListener('mousedown', mainPinMousedownHandler);
   };
@@ -96,9 +96,8 @@
 
   window.map = {
     disable: disableMapAndForm,
-    active: activateMapAndForm,
-    activateMousedownHandler: mainPinMousedownHandler,
-    activateKeydownHandler: mainPinKeydownHandler,
+    mainPinMousedownHandler: mainPinMousedownHandler,
+    mainPinKeydownHandler: mainPinKeydownHandler,
     putMainPinCenter: putMainPinCenterMap
   };
 
