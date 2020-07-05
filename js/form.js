@@ -12,7 +12,8 @@
   var timeInField = offerForm.timein;
   var timeOutField = offerForm.timeout;
   var mainPin = document.querySelector('.map__pin--main');
-
+  var offerFormResetButton = document.querySelector('.ad-form__reset');
+  var mainElement = document.querySelector('main');
 
   var validateRoomsAndGuestsValues = function () {
     if (guestField.value > roomField.value && guestField.value !== '0' && roomField.value !== '100') {
@@ -58,7 +59,6 @@
   var validateTypeField = function () {
     priceField.min = window.data.MIN_PRICE_DEPENDENCE_TYPE[typeField.value];
     priceField.setAttribute('placeholder', window.data.MIN_PRICE_DEPENDENCE_TYPE[typeField.value]);
-    priceField.value = '';
     window.util.removeErrorField(priceField);
   };
   var typeFieldChangeHandler = function () {
@@ -103,11 +103,6 @@
     validateTimeOutField();
   };
 
-  var offerFormSubmitHandler = function () {
-
-  };
-  offerForm.addEventListener('submit', offerFormSubmitHandler);
-
   titleField.addEventListener('invalid', titleFieldInvalidHandler);
   titleField.addEventListener('input', titleFieldInputHandler);
   typeField.addEventListener('change', typeFieldChangeHandler);
@@ -124,6 +119,40 @@
 
   addressField.value = getAddress(window.pin.part.CENTER);
 
+  var sendFormData = function () {
+    window.uploadOffer(new FormData(offerForm), function () {
+      window.modal.show(window.modal.success, mainElement);
+      offerForm.reset();
+      window.map.disable();
+      mainPin.addEventListener('mousedown', window.map.activateMousedownHandler);
+      mainPin.addEventListener('keydown', window.map.abc);
+    }, showErrorModal);
+  };
+  var showErrorModal = function () {
+    window.modal.show(window.modal.error, mainElement);
+  };
+
+  var offerFormSubmitHandler = function (evt) {
+    sendFormData();
+    evt.preventDefault();
+  };
+  offerForm.addEventListener('submit', offerFormSubmitHandler);
+  var resetFormAndMap = function () {
+    offerForm.reset();
+    validateTypeField();
+    window.map.disable();
+    window.util.removeErrorField(roomField);
+    window.util.removeErrorField(priceField);
+    window.util.removeErrorField(titleField);
+    mainPin.addEventListener('mousedown', window.map.activateMousedownHandler);
+    mainPin.addEventListener('keydown', window.map.activateKeydownHandler);
+    window.map.putMainPinCenter();
+  };
+  var offerFormResetButtonClickHandler = function () {
+    resetFormAndMap();
+  };
+
+  offerFormResetButton.addEventListener('click', offerFormResetButtonClickHandler);
 
   window.form = {
     fields: offerForm,
@@ -132,3 +161,4 @@
   };
 
 })();
+

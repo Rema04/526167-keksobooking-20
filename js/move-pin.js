@@ -11,7 +11,7 @@
       y: evt.clientY
     };
 
-    var mainPinMousemoveHandler = function (moveEvt) {
+    window.mainPinMousemoveHandler = function (moveEvt) {
       moveEvt.preventDefault();
       var shift = {
         x: startCoords.x - moveEvt.clientX,
@@ -44,13 +44,12 @@
     var mainPinMouseupHandler = function (upEvt) {
       upEvt.preventDefault();
 
-      document.removeEventListener('mousemove', mainPinMousemoveHandler);
+      document.removeEventListener('mousemove', window.mainPinMousemoveHandler);
       document.removeEventListener('mouseup', mainPinMouseupHandler);
     };
 
-    document.addEventListener('mousemove', mainPinMousemoveHandler);
+    document.addEventListener('mousemove', window.mainPinMousemoveHandler);
     document.addEventListener('mouseup', mainPinMouseupHandler);
-
   });
 
 })();

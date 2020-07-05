@@ -1,30 +1,48 @@
 'use strict';
 
 (function () {
-  var offerForm = document.querySelector('.ad-form');
   var successModal = document.querySelector('#success')
     .content.querySelector('.success');
 
-  var succesText = successModal.querySelector('.success__message');
-  var showMessageSubmit = function (message, insertionPoint) {
-    insertionPoint.append(message);
+  var errorModal = document.querySelector('#error')
+    .content.querySelector('.error');
+  var errorMessageCloseButton = errorModal.querySelector('.error__button');
+  var closeModal = function (modal) {
+    modal.remove();
+    document.removeEventListener('keydown', modalKeydownHandler);
+    document.removeEventListener('click', modalClickHandler);
+    errorMessageCloseButton.removeEventListener('click', errorMessageCloseButtonClickHandler);
+  };
+  var errorMessageCloseButtonClickHandler = function () {
+    closeModal(currentModal);
   };
 
-  offerForm.addEventListener('submit', function (evt) {
-    evt.preventDefault();
-    showMessageSubmit(successModal, offerForm);
-    offerForm.reset();
-  });
-
-  successModal.addEventListener('click', function (evt) {
-    if (evt.target !== succesText) {
-      successModal.remove();
+  var currentModal;
+  var modalKeydownHandler = function (evt) {
+    if (evt.key === window.util.ESCAPE_KEY) {
+      closeModal(currentModal);
     }
-  });
+  };
 
-  document.addEventListener('keydown', function (evt) {
-    window.util.isEscapePress(evt, successModal.remove());
-  });
+  var modalClickHandler = function (evt) {
+    if (evt.target !== currentModal.children[0]) {
+      closeModal(currentModal);
+    }
+  };
 
+  var showModal = function (modal, insertionPoint) {
+    insertionPoint.append(modal);
+    currentModal = modal;
+    document.addEventListener('keydown', modalKeydownHandler);
+    document.addEventListener('click', modalClickHandler);
+    errorMessageCloseButton.addEventListener('click', errorMessageCloseButtonClickHandler);
+  };
+
+
+  window.modal = {
+    show: showModal,
+    close: closeModal,
+    success: successModal,
+    error: errorModal
+  };
 })();
-
