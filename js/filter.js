@@ -21,13 +21,7 @@
     return limitedFilteredElements;
   };
 
-
-  var housingTypeChangeHandler = function () {
-    getFilteredElementsHousingType(window.allPins, housingType);
-  };
-
   window.filter = {
-    housingType: housingTypeChangeHandler,
     getFilteredElementsHousingType: getFilteredElementsHousingType
   };
 
