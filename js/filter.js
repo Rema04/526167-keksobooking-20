@@ -2,8 +2,6 @@
 
 (function () {
   var LIMITED_AMOUNT_SHOWN_PINS = window.util.LIMITED_AMOUNT_SHOWN_PINS;
-  var mapFilters = document.querySelector('.map__filters');
-  var housingType = mapFilters['housing-type'];
   var checkMatchedOfCondition = function (item, condition) {
     var isMatched = item === condition || condition === 'any' ? true : false;
     return isMatched;
