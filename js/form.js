@@ -124,10 +124,7 @@
       window.modal.show(window.modal.success, mainElement);
       resetFormAndMap();
       mainPin.addEventListener('keydown', window.map.abc);
-    }, showErrorModal);
-  };
-  var showErrorModal = function () {
-    window.modal.show(window.modal.error, mainElement);
+    }, window.modal.showError);
   };
 
   var offerFormSubmitHandler = function (evt) {

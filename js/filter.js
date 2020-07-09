@@ -1,10 +1,8 @@
 'use strict';
 
 (function () {
-  var LIMITED_AMOUNT_SHOWN_PINS = window.util.LIMITED_AMOUNT_SHOWN_PINS;
   var checkMatchedOfCondition = function (item, condition) {
-    var isMatched = item === condition || condition === 'any' ? true : false;
-    return isMatched;
+    return item === condition || condition === window.util.ANY_SELECT;
   };
 
   var getFilteredElementsHousingType = function (elements, userChoice) {
@@ -13,10 +11,12 @@
     for (var i = 0; i < elements.length; i++) {
       if (checkMatchedOfCondition(elements[i].offer.type, userChoice)) {
         filteredElements.push(elements[i]);
+        if (filteredElements.length === window.util.LIMITED_AMOUNT_SHOWN_PINS) {
+          break;
+        }
       }
     }
-    var limitedFilteredElements = filteredElements.slice(0, LIMITED_AMOUNT_SHOWN_PINS);
-    return limitedFilteredElements;
+    return filteredElements;
   };
 
   window.filter = {

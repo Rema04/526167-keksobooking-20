@@ -6,6 +6,7 @@
   var ESCAPE_KEY = 'Escape';
   var LEFT_MOUSE_BUTTON = 0;
   var LIMITED_AMOUNT_SHOWN_PINS = 5;
+  var ANY_SELECT = 'any';
 
   var addErrorField = function (field, errorText) {
     field.classList.add('error-border');
@@ -72,7 +73,8 @@
     deleteInsertionPoint: deleteInsertionPoint,
     changeDisabledForm: changeDisabledForm,
     isEscapePress: isEscapePress,
-    LIMITED_AMOUNT_SHOWN_PINS: LIMITED_AMOUNT_SHOWN_PINS
+    LIMITED_AMOUNT_SHOWN_PINS: LIMITED_AMOUNT_SHOWN_PINS,
+    ANY_SELECT: ANY_SELECT
   };
 
 

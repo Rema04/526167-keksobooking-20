@@ -5,7 +5,6 @@
   var URL_UPLOAD = 'https://javascript.pages.academy/keksobooking';
   var URL_REQUEST = 'https://javascript.pages.academy/keksobooking/data';
   var TIME_DELAY = 1000;
-
   var uploadOffers = function (data, onSuccess, onError) {
     var xhr = createRequest(onSuccess, onError);
     xhr.open('POST', URL_UPLOAD);
@@ -25,7 +24,7 @@
       if (xhr.status === SUCCESS_STATUS) {
         onSuccess(xhr.response);
       } else {
-        onError();
+        onError('Произошла ошибка. Статус: ' + xhr.status);
       }
       xhr.addEventListener('error', function () {
         onError('Произошла ошибка соединения');
