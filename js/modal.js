@@ -1,11 +1,13 @@
 'use strict';
 
 (function () {
+  var mainElement = document.querySelector('main');
   var successModal = document.querySelector('#success')
     .content.querySelector('.success');
 
   var errorModal = document.querySelector('#error')
     .content.querySelector('.error');
+  var errorModalMessage = errorModal.querySelector('.error__message');
   var errorMessageCloseButton = errorModal.querySelector('.error__button');
   var closeModal = function (modal) {
     modal.remove();
@@ -30,18 +32,23 @@
     }
   };
 
-  var showModal = function (modal, insertionPoint) {
-    insertionPoint.append(modal);
+  var showModal = function (modal) {
+    mainElement.append(modal);
     currentModal = modal;
-    document.addEventListener('keydown', modalKeydownHandler);
-    document.addEventListener('click', modalClickHandler);
+    currentModal.addEventListener('keydown', modalKeydownHandler);
+    currentModal.addEventListener('click', modalClickHandler);
     errorMessageCloseButton.addEventListener('click', errorMessageCloseButtonClickHandler);
   };
 
+  var showErrorModal = function (message) {
+    errorModalMessage.textContent = message;
+    showModal(errorModal, message);
+  };
 
   window.modal = {
     show: showModal,
     close: closeModal,
+    showError: showErrorModal,
     success: successModal,
     error: errorModal
   };

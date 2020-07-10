@@ -120,16 +120,12 @@
   addressField.value = getAddress(window.pin.part.CENTER);
 
   var sendFormData = function () {
-    window.uploadOffer(new FormData(offerForm), function () {
+    window.backend.upload(new FormData(offerForm), function () {
       window.modal.show(window.modal.success, mainElement);
-      offerForm.reset();
-      window.map.disable();
-      mainPin.addEventListener('mousedown', window.map.activateMousedownHandler);
-      mainPin.addEventListener('keydown', window.map.abc);
-    }, showErrorModal);
-  };
-  var showErrorModal = function () {
-    window.modal.show(window.modal.error, mainElement);
+      resetFormAndMap();
+      mainPin.addEventListener('mousedown', window.map.mainPinMousedownHandler);
+      mainPin.addEventListener('keydown', window.map.mainPinKeydownHandler);
+    }, window.modal.showError);
   };
 
   var offerFormSubmitHandler = function (evt) {
@@ -144,8 +140,8 @@
     window.util.removeErrorField(roomField);
     window.util.removeErrorField(priceField);
     window.util.removeErrorField(titleField);
-    mainPin.addEventListener('mousedown', window.map.activateMousedownHandler);
-    mainPin.addEventListener('keydown', window.map.activateKeydownHandler);
+    mainPin.addEventListener('mousedown', window.map.mainPinMouseDownHandler);
+    mainPin.addEventListener('keydown', window.map.mainPinKeydownHandler);
     window.map.putMainPinCenter();
   };
   var offerFormResetButtonClickHandler = function () {
