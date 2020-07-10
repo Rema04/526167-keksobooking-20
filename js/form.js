@@ -123,7 +123,8 @@
     window.backend.upload(new FormData(offerForm), function () {
       window.modal.show(window.modal.success, mainElement);
       resetFormAndMap();
-      mainPin.addEventListener('keydown', window.map.abc);
+      mainPin.addEventListener('mousedown', window.map.mainPinMousedownHandler);
+      mainPin.addEventListener('keydown', window.map.mainPinKeydownHandler);
     }, window.modal.showError);
   };
 
@@ -139,7 +140,7 @@
     window.util.removeErrorField(roomField);
     window.util.removeErrorField(priceField);
     window.util.removeErrorField(titleField);
-    mainPin.addEventListener('mousedown', window.map.mainPinMousedownHandler);
+    mainPin.addEventListener('mousedown', window.map.mainPinMouseDownHandler);
     mainPin.addEventListener('keydown', window.map.mainPinKeydownHandler);
     window.map.putMainPinCenter();
   };

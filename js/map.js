@@ -38,7 +38,7 @@
     window.form.getAddress(window.pin.part.TIP);
     window.backend.load(onSuccess, window.modal.showError);
     mainPin.removeEventListener('keydown', mainPinKeydownHandler);
-    mainPin.removeEventListener('click', mainPinClickHandler);
+    mainPin.removeEventListener('mousedown', mainPinMousedownHandler);
   };
   var disableMapAndForm = function () {
     map.classList.add('map--faded');
@@ -57,13 +57,13 @@
       activateMapAndForm();
     }
   };
-  var mainPinClickHandler = function (evt) {
+  var mainPinMousedownHandler = function (evt) {
     if (evt.button === window.util.LEFT_MOUSE_BUTTON) {
       activateMapAndForm();
     }
   };
 
-  mainPin.addEventListener('click', mainPinClickHandler);
+  mainPin.addEventListener('mousedown', mainPinMousedownHandler);
   mainPin.addEventListener('keydown', mainPinKeydownHandler);
 
   var openOfferCard = function (card) {
@@ -117,7 +117,7 @@
 
   window.map = {
     disable: disableMapAndForm,
-    mainPinMousedownHandler: mainPinClickHandler,
+    mainPinMousedownHandler: mainPinMousedownHandler,
     mainPinKeydownHandler: mainPinKeydownHandler,
     putMainPinCenter: putMainPinCenterMap,
   };

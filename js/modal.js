@@ -35,8 +35,8 @@
   var showModal = function (modal) {
     mainElement.append(modal);
     currentModal = modal;
-    document.addEventListener('keydown', modalKeydownHandler);
-    document.addEventListener('click', modalClickHandler);
+    currentModal.addEventListener('keydown', modalKeydownHandler);
+    currentModal.addEventListener('click', modalClickHandler);
     errorMessageCloseButton.addEventListener('click', errorMessageCloseButtonClickHandler);
   };
 
