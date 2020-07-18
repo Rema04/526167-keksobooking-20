@@ -7,7 +7,7 @@
   var LEFT_MOUSE_BUTTON = 0;
   var LIMITED_AMOUNT_SHOWN_PINS = 5;
   var ANY_SELECT = 'any';
-  var housingPriceMap = {
+  var HousingPriceMap = {
     'low': {
       min: 0,
       max: 10000
@@ -94,7 +94,7 @@
     isEscapePress: isEscapePress,
     LIMITED_AMOUNT_SHOWN_PINS: LIMITED_AMOUNT_SHOWN_PINS,
     ANY_SELECT: ANY_SELECT,
-    housingPriceMap: housingPriceMap,
+    HousingPriceMap: HousingPriceMap,
     Price: Price
   };
 

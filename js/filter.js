@@ -2,7 +2,7 @@
 
 (function () {
   var Price = window.util.Price;
-  var housingPriceMap = window.util.housingPriceMap;
+  var HousingPriceMap = window.util.HousingPriceMap;
   var housingType = document.querySelector('#housing-type');
   var housingPrice = document.querySelector('#housing-price');
   var housingRoom = document.querySelector('#housing-rooms');
@@ -12,37 +12,44 @@
     return item === condition || condition === window.util.ANY_SELECT;
   };
 
-  var checkPrice = function (offerPrice, condition) {
-    return condition === Price.low && offerPrice < housingPriceMap[condition].max ||
-      condition === Price.high && offerPrice > housingPriceMap[condition].min ||
-      condition === Price.middle && (offerPrice >= housingPriceMap[condition].min &&
-        offerPrice <= housingPriceMap[condition].max) || condition === window.util.ANY_SELECT;
+  var checkPrice = function (advert, condition) {
+    switch (condition) {
+      case Price.low:
+        return advert < HousingPriceMap[condition].max;
+      case Price.middle:
+        return advert >= HousingPriceMap[condition].min && advert <= HousingPriceMap[condition].max;
+      case Price.high:
+        return advert > HousingPriceMap[condition].min;
+      default:
+        return condition === window.util.ANY_SELECT;
+    }
   };
+
   var checkFeatures = function (offerFeatures, selectedFeatures) {
     return selectedFeatures.every(function (feature) {
       return offerFeatures.includes(feature);
     });
   };
-  var checkMatchedHousingType = function (element) {
-    return checkMatchedOfCondition(element.offer.type, housingType.value);
+  var checkMatchedHousingType = function (advert) {
+    return checkMatchedOfCondition(advert.offer.type, housingType.value);
   };
 
-  var checkMatchedPrice = function (element) {
-    return checkPrice(element.offer.price, housingPrice.value);
+  var checkMatchedPrice = function (advert) {
+    return checkPrice(advert.offer.price, housingPrice.value);
   };
-  var checkMatchedRooms = function (element) {
-    return checkMatchedOfCondition(String(element.offer.rooms), housingRoom.value);
+  var checkMatchedRooms = function (advert) {
+    return checkMatchedOfCondition(String(advert.offer.rooms), housingRoom.value);
   };
-  var checkMatchedGuests = function (element) {
-    return checkMatchedOfCondition(String(element.offer.guests), housingGuest.value);
+  var checkMatchedGuests = function (advert) {
+    return checkMatchedOfCondition(String(advert.offer.guests), housingGuest.value);
   };
 
-  var checkMatchedFeatures = function (element) {
+  var checkMatchedFeatures = function (advert) {
     var checkboxFeatures = Array.from(document.querySelectorAll('.map__checkbox:checked'));
     var featuresValues = checkboxFeatures.map(function (feature) {
       return feature.value;
     });
-    return checkFeatures(element.offer.features, featuresValues);
+    return checkFeatures(advert.offer.features, featuresValues);
   };
   var checkParameters = [
     checkMatchedHousingType,
@@ -52,13 +59,13 @@
     checkMatchedFeatures
   ];
 
-  var getFilteredPins = function (elements) {
+  var getFilteredPins = function (adverts) {
     var filteredElements = [];
-    for (var i = 0; i < elements.length; i++) {
+    for (var i = 0; i < adverts.length; i++) {
       if (checkParameters.every(function (parameter) {
-        return parameter(elements[i]);
+        return parameter(adverts[i]);
       })) {
-        filteredElements.push(elements[i]);
+        filteredElements.push(adverts[i]);
       }
       if (filteredElements.length === window.util.LIMITED_AMOUNT_SHOWN_PINS) {
         break;
