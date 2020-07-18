@@ -153,7 +153,7 @@
   window.form = {
     fields: offerForm,
     addressField: addressField,
-    getAddress: getAddress
+    getAddress: getAddress,
   };
 
 })();

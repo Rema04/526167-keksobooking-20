@@ -7,7 +7,26 @@
   var LEFT_MOUSE_BUTTON = 0;
   var LIMITED_AMOUNT_SHOWN_PINS = 5;
   var ANY_SELECT = 'any';
+  var HousingPriceMap = {
+    'low': {
+      min: 0,
+      max: 10000
+    },
+    'middle': {
+      min: 10000,
+      max: 50000
+    },
+    'high': {
+      min: 50000,
+      max: Infinity
+    }
+  };
 
+  var Price = {
+    low: 'low',
+    middle: 'middle',
+    high: 'high'
+  };
   var addErrorField = function (field, errorText) {
     field.classList.add('error-border');
     field.setCustomValidity(errorText);
@@ -74,7 +93,9 @@
     changeDisabledForm: changeDisabledForm,
     isEscapePress: isEscapePress,
     LIMITED_AMOUNT_SHOWN_PINS: LIMITED_AMOUNT_SHOWN_PINS,
-    ANY_SELECT: ANY_SELECT
+    ANY_SELECT: ANY_SELECT,
+    HousingPriceMap: HousingPriceMap,
+    Price: Price
   };
 
 
