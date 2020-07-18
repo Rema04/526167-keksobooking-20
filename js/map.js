@@ -6,11 +6,9 @@
   var mainPin = document.querySelector('.map__pin--main');
   var mapPinsBlock = document.querySelector('.map__pins');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
-  var filters = mapFiltersContainer.querySelector('form');
-  var housingType = document.querySelector('#housing-type');
-
+  var filterForm = mapFiltersContainer.querySelector('form');
   window.util.changeDisabledForm(window.form.fields);
-  window.util.changeDisabledForm(filters);
+  window.util.changeDisabledForm(filterForm);
 
   var putMainPinCenterMap = function () {
     mainPin.style.top = map.clientHeight / 2 + 'px';
@@ -21,7 +19,7 @@
   var onSuccess = function (data) {
     allPins = data;
     renderPins(allPins);
-    window.util.changeDisabledForm(filters);
+    window.util.changeDisabledForm(filterForm);
   };
   var deleteAllPins = function () {
     var pinCollections =
@@ -35,7 +33,7 @@
     window.form.fields.classList.remove('ad-form--disabled');
     window.util.changeDisabledForm(window.form.fields);
     window.form.addressField.value =
-    window.form.getAddress(window.pin.part.TIP);
+      window.form.getAddress(window.pin.part.TIP);
     window.backend.load(onSuccess, window.modal.showError);
     mainPin.removeEventListener('keydown', mainPinKeydownHandler);
     mainPin.removeEventListener('mousedown', mainPinMousedownHandler);
@@ -45,8 +43,8 @@
     window.form.fields.classList.add('ad-form--disabled');
     window.util.changeDisabledForm(window.form.fields);
     window.form.addressField.value =
-    window.form.getAddress(window.pin.part.CENTER);
-    window.util.changeDisabledForm(filters);
+      window.form.getAddress(window.pin.part.CENTER);
+    window.util.changeDisabledForm(filterForm);
     putMainPinCenterMap();
     deleteCard(currentCard);
     deleteAllPins();
@@ -96,7 +94,7 @@
       addEventListener('mousedown', closeCardButtonMousedownHandler);
   };
   var showFilteredOffer = function () {
-    var filteredOffers = window.filter.getFilteredElementsHousingType(allPins, housingType);
+    var filteredOffers = window.filter.getFilteredPins(allPins);
     deleteAllPins();
     deleteCard(currentCard);
     renderPins(filteredOffers);
@@ -109,17 +107,19 @@
     }
     mapPinsBlock.append(pinCollection);
   };
-  var housingTypeChangeHandler = function () {
-    showFilteredOffer();
+  var filterFormChangeHandler = function () {
+    window.debounce(showFilteredOffer);
   };
 
-  housingType.addEventListener('change', housingTypeChangeHandler);
 
+  filterForm.addEventListener('change', filterFormChangeHandler);
   window.map = {
     disable: disableMapAndForm,
     mainPinMousedownHandler: mainPinMousedownHandler,
     mainPinKeydownHandler: mainPinKeydownHandler,
     putMainPinCenter: putMainPinCenterMap,
+    filters: filterForm,
+    allPins: allPins
   };
 
 })();

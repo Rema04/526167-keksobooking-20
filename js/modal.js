@@ -42,7 +42,7 @@
 
   var showErrorModal = function (message) {
     errorModalMessage.textContent = message;
-    showModal(errorModal, message);
+    showModal(errorModal);
   };
 
   window.modal = {
