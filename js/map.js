@@ -1,14 +1,12 @@
 'use strict';
-
 (function () {
+
   var allPins;
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin--main');
   var mapPinsBlock = document.querySelector('.map__pins');
   var mapFiltersContainer = document.querySelector('.map__filters-container');
   var filterForm = mapFiltersContainer.querySelector('form');
-  window.util.changeDisabledForm(window.form.fields);
-  window.util.changeDisabledForm(filterForm);
 
   var putMainPinCenterMap = function () {
     mainPin.style.top = map.clientHeight / 2 + 'px';
@@ -18,7 +16,7 @@
   };
   var onSuccess = function (data) {
     allPins = data;
-    renderPins(allPins);
+    renderPins(allPins.slice(0, window.util.LIMITED_AMOUNT_SHOWN_PINS));
     window.util.changeDisabledForm(filterForm);
   };
   var deleteAllPins = function () {
@@ -44,7 +42,6 @@
     window.util.changeDisabledForm(window.form.fields);
     window.form.addressField.value =
       window.form.getAddress(window.pin.part.CENTER);
-    window.util.changeDisabledForm(filterForm);
     putMainPinCenterMap();
     deleteCard(currentCard);
     deleteAllPins();
@@ -60,9 +57,13 @@
       activateMapAndForm();
     }
   };
-
-  mainPin.addEventListener('mousedown', mainPinMousedownHandler);
-  mainPin.addEventListener('keydown', mainPinKeydownHandler);
+  var getStartState = function () {
+    window.util.changeDisabledForm(filterForm);
+    window.util.changeDisabledForm(window.form.fields);
+    mainPin.addEventListener('mousedown', mainPinMousedownHandler);
+    mainPin.addEventListener('keydown', mainPinKeydownHandler);
+  };
+  getStartState();
 
   var openOfferCard = function (card) {
     mapFiltersContainer.before(card);
@@ -118,6 +119,7 @@
     mainPinMousedownHandler: mainPinMousedownHandler,
     mainPinKeydownHandler: mainPinKeydownHandler,
     putMainPinCenter: putMainPinCenterMap,
+    getStartState: getStartState,
     filters: filterForm,
     allPins: allPins
   };

@@ -1,5 +1,4 @@
 'use strict';
-
 (function () {
 
   var offerForm = document.querySelector('.ad-form');
@@ -57,8 +56,8 @@
   };
 
   var validateTypeField = function () {
-    priceField.min = window.data.MIN_PRICE_DEPENDENCE_TYPE[typeField.value];
-    priceField.setAttribute('placeholder', window.data.MIN_PRICE_DEPENDENCE_TYPE[typeField.value]);
+    priceField.min = window.util.MIN_PRICE_DEPENDENCE_TYPE[typeField.value];
+    priceField.setAttribute('placeholder', window.util.MIN_PRICE_DEPENDENCE_TYPE[typeField.value]);
     window.util.removeErrorField(priceField);
   };
   var typeFieldChangeHandler = function () {
@@ -71,8 +70,8 @@
     var typeValue = typeField.value;
     if (priceValue > maxPrice) {
       window.util.addErrorField(priceField, 'Максимальное значение - ' + maxPrice);
-    } else if (priceValue < window.data.MIN_PRICE_DEPENDENCE_TYPE[typeValue]) {
-      window.util.addErrorField(priceField, 'Минимальное значение для  ' + window.data.REAL_ESTATE_TYPE[typeValue] + ' - ' + window.data.MIN_PRICE_DEPENDENCE_TYPE[typeValue]);
+    } else if (priceValue < window.util.MIN_PRICE_DEPENDENCE_TYPE[typeValue]) {
+      window.util.addErrorField(priceField, 'Минимальное значение для  ' + window.util.REAL_ESTATE_TYPE[typeValue] + ' - ' + window.util.MIN_PRICE_DEPENDENCE_TYPE[typeValue]);
     } else if (priceValue === '') {
       window.util.addErrorField(priceField, 'Поле обязательно к заполнению');
     } else {
@@ -143,6 +142,8 @@
     mainPin.addEventListener('mousedown', window.map.mainPinMouseDownHandler);
     mainPin.addEventListener('keydown', window.map.mainPinKeydownHandler);
     window.map.putMainPinCenter();
+    window.preview.remove();
+    window.map.getStartState();
   };
   var offerFormResetButtonClickHandler = function () {
     resetFormAndMap();

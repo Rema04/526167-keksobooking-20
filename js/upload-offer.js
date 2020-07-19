@@ -1,8 +1,6 @@
 'use strict';
-
 (function () {
-  var URL = 'https://javascript.pages.academy/keksobookin';
-  var TIME_DELAY = 1000;
+
   window.uploadOffer = function (data, onSuccess, onError) {
     var xhr = new XMLHttpRequest();
     xhr.responseType = 'json';
@@ -22,8 +20,8 @@
       });
     });
 
-    xhr.timeout = TIME_DELAY;
-    xhr.open('POST', URL);
+    xhr.timeout = window.util.TIME_DELAY;
+    xhr.open('POST', window.util.URL_UPLOAD);
     xhr.send(data);
   };
 

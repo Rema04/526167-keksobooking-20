@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+
   var MainPinPart = {
     CENTER: 'center',
     TIP: 'tip'
@@ -27,7 +28,9 @@
   var renderFinalPins = function (pins) {
     var fragment = document.createDocumentFragment();
     for (var i = 0; i < pins.length; i++) {
-      fragment.appendChild(renderSimilarPin(pins[i]));
+      if (pins[i].offer) {
+        fragment.appendChild(renderSimilarPin(pins[i]));
+      }
     }
     return fragment;
   };

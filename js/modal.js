@@ -1,6 +1,6 @@
 'use strict';
-
 (function () {
+
   var mainElement = document.querySelector('main');
   var successModal = document.querySelector('#success')
     .content.querySelector('.success');
