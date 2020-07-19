@@ -1,6 +1,7 @@
 'use strict';
 (function () {
 
+  var filterForm = document.querySelector('.map__filters-container form');
   var offerForm = document.querySelector('.ad-form');
   var addressField = offerForm.address;
   var titleField = offerForm.title;
@@ -139,11 +140,8 @@
     window.util.removeErrorField(roomField);
     window.util.removeErrorField(priceField);
     window.util.removeErrorField(titleField);
-    mainPin.addEventListener('mousedown', window.map.mainPinMouseDownHandler);
-    mainPin.addEventListener('keydown', window.map.mainPinKeydownHandler);
     window.map.putMainPinCenter();
     window.preview.remove();
-    window.map.getStartState();
   };
   var offerFormResetButtonClickHandler = function () {
     resetFormAndMap();

@@ -80,17 +80,17 @@
     return data;
   };
 
-  var changeDisabledForm = function (form) {
+  var disableForm = function (form) {
     var formElements = form.children;
     for (var i = 0; i < formElements.length; i++) {
-      formElements[i].toggleAttribute('disabled');
+      formElements[i].setAttribute('disabled', 'disabled');
     }
   };
 
-
-  var isEscapePress = function (evt, action) {
-    if (evt.key === ESCAPE_KEY) {
-      action();
+  var activateForm = function (form) {
+    var formElements = form.children;
+    for (var i = 0; i < formElements.length; i++) {
+      formElements[i].removeAttribute('disabled');
     }
   };
 
@@ -119,8 +119,8 @@
     removeErrorField: removeErrorField,
     getCoords: getCoords,
     deleteInsertionPoint: deleteInsertionPoint,
-    changeDisabledForm: changeDisabledForm,
-    isEscapePress: isEscapePress,
+    disableForm: disableForm,
+    activateForm: activateForm
   };
 
 })();

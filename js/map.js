@@ -17,7 +17,7 @@
   var onSuccess = function (data) {
     allPins = data;
     renderPins(allPins.slice(0, window.util.LIMITED_AMOUNT_SHOWN_PINS));
-    window.util.changeDisabledForm(filterForm);
+    window.util.activateForm(filterForm);
   };
   var deleteAllPins = function () {
     var pinCollections =
@@ -29,7 +29,7 @@
   var activateMapAndForm = function () {
     map.classList.remove('map--faded');
     window.form.fields.classList.remove('ad-form--disabled');
-    window.util.changeDisabledForm(window.form.fields);
+    window.util.activateForm(window.form.fields);
     window.form.addressField.value =
       window.form.getAddress(window.pin.part.TIP);
     window.backend.load(onSuccess, window.modal.showError);
@@ -39,12 +39,14 @@
   var disableMapAndForm = function () {
     map.classList.add('map--faded');
     window.form.fields.classList.add('ad-form--disabled');
-    window.util.changeDisabledForm(window.form.fields);
+    window.util.disableForm(window.form.fields);
+    window.util.disableForm(filterForm);
     window.form.addressField.value =
       window.form.getAddress(window.pin.part.CENTER);
     putMainPinCenterMap();
     deleteCard(currentCard);
     deleteAllPins();
+    getStartState();
   };
 
   var mainPinKeydownHandler = function (evt) {
@@ -57,9 +59,10 @@
       activateMapAndForm();
     }
   };
+
   var getStartState = function () {
-    window.util.changeDisabledForm(filterForm);
-    window.util.changeDisabledForm(window.form.fields);
+    window.util.disableForm(filterForm);
+    window.util.disableForm(window.form.fields);
     mainPin.addEventListener('mousedown', mainPinMousedownHandler);
     mainPin.addEventListener('keydown', mainPinKeydownHandler);
   };
