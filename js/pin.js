@@ -17,21 +17,13 @@
     return pin;
   };
 
-  var getOffers = function (amount) {
-    var offers = [];
-    for (var i = 0; i < amount; i++) {
-      offers.push(window.createOffer(i + 1));
-    }
-    return offers;
-  };
-
   var renderFinalPins = function (pins) {
     var fragment = document.createDocumentFragment();
-    for (var i = 0; i < pins.length; i++) {
-      if (pins[i].offer) {
-        fragment.appendChild(renderSimilarPin(pins[i]));
+    pins.forEach(function (pin) {
+      if (pin.offer) {
+        fragment.append(renderSimilarPin(pin));
       }
-    }
+    });
     return fragment;
   };
 
@@ -39,7 +31,6 @@
   window.pin = {
     part: MainPinPart,
     render: renderFinalPins,
-    getOffers: getOffers
   };
 
 })();

@@ -22,9 +22,9 @@
   var deleteAllPins = function () {
     var pinCollections =
       document.querySelectorAll('.map__pin:not(.map__pin--main)');
-    for (var i = 0; i < pinCollections.length; i++) {
-      pinCollections[i].remove();
-    }
+    pinCollections.forEach(function (pin) {
+      pin.remove();
+    });
   };
   var activateMapAndForm = function () {
     map.classList.remove('map--faded');
@@ -46,7 +46,7 @@
     putMainPinCenterMap();
     deleteCard(currentCard);
     deleteAllPins();
-    getStartState();
+    setStartState();
   };
 
   var mainPinKeydownHandler = function (evt) {
@@ -60,13 +60,13 @@
     }
   };
 
-  var getStartState = function () {
+  var setStartState = function () {
     window.util.disableForm(filterForm);
     window.util.disableForm(window.form.fields);
     mainPin.addEventListener('mousedown', mainPinMousedownHandler);
     mainPin.addEventListener('keydown', mainPinKeydownHandler);
   };
-  getStartState();
+  setStartState();
 
   var openOfferCard = function (card) {
     mapFiltersContainer.before(card);
@@ -122,7 +122,6 @@
     mainPinMousedownHandler: mainPinMousedownHandler,
     mainPinKeydownHandler: mainPinKeydownHandler,
     putMainPinCenter: putMainPinCenterMap,
-    getStartState: getStartState,
     filters: filterForm,
     allPins: allPins
   };

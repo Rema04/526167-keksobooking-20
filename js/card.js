@@ -7,22 +7,22 @@
   var addFeaturesInCard = function (data, insertionPoint) {
     window.util.deleteInsertionPoint(data, insertionPoint);
     insertionPoint.innerHTML = '';
-    for (var i = 0; i < data.length; i++) {
+    data.forEach(function (feature) {
       var newElement = document.createElement('li');
-      newElement.classList.add('popup__feature', 'popup__feature' + '--' + data[i]);
+      newElement.classList.add('popup__feature', 'popup__feature' + '--' + feature);
       insertionPoint.append(newElement);
-    }
+    });
   };
 
   var addPhotoInCard = function (data, insertionPoint) {
     window.util.deleteInsertionPoint(data, insertionPoint);
     var similarPhoto = insertionPoint.firstElementChild.cloneNode();
     insertionPoint.innerHTML = '';
-    for (var i = 0; i < data.length; i++) {
+    data.forEach(function (urlPhoto) {
       var photo = similarPhoto.cloneNode();
-      photo.src = data[i];
-      insertionPoint.appendChild(photo);
-    }
+      photo.src = urlPhoto;
+      insertionPoint.append(photo);
+    });
   };
 
   var renderOfferCard = function (data) {

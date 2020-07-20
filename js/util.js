@@ -52,20 +52,6 @@
     field.setCustomValidity('');
   };
 
-  var getRandomIntegerRange = function (min, max) {
-    var random = min + Math.random() * (max + 1 - min);
-    return Math.floor(random);
-  };
-
-  var getRandomElement = function (elements) {
-    var index = getRandomIntegerRange(0, elements.length - 1);
-    return elements[index];
-  };
-
-  var getSliceElements = function (elements) {
-    return elements.slice(0, getRandomIntegerRange(0, elements.length));
-  };
-
   var getCoords = function (element) {
     return {
       top: element.offsetTop,
@@ -112,9 +98,6 @@
     HousingPriceMap: HousingPriceMap,
     FILE_TYPES: FILE_TYPES,
     PICTURE_STUB: PICTURE_STUB,
-    getRandomIntegerRange: getRandomIntegerRange,
-    getRandomElement: getRandomElement,
-    getSliceElements: getSliceElements,
     addErrorField: addErrorField,
     removeErrorField: removeErrorField,
     getCoords: getCoords,
