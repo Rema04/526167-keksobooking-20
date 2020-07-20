@@ -1,7 +1,6 @@
 'use strict';
-
 (function () {
-  var Price = window.util.Price;
+
   var HousingPriceMap = window.util.HousingPriceMap;
   var housingType = document.querySelector('#housing-type');
   var housingPrice = document.querySelector('#housing-price');
@@ -12,17 +11,8 @@
     return item === condition || condition === window.util.ANY_SELECT;
   };
 
-  var checkPrice = function (advert, condition) {
-    switch (condition) {
-      case Price.low:
-        return advert < HousingPriceMap[condition].max;
-      case Price.middle:
-        return advert >= HousingPriceMap[condition].min && advert <= HousingPriceMap[condition].max;
-      case Price.high:
-        return advert > HousingPriceMap[condition].min;
-      default:
-        return condition === window.util.ANY_SELECT;
-    }
+  var checkPrice = function (advertPrice, type) {
+    return type === window.util.ANY_SELECT || (advertPrice >= HousingPriceMap[type].min && advertPrice < HousingPriceMap[type].max);
   };
 
   var checkFeatures = function (offerFeatures, selectedFeatures) {

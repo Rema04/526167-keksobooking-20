@@ -1,5 +1,6 @@
 'use strict';
 (function () {
+
   var map = document.querySelector('.map');
   var mainPin = document.querySelector('.map__pin');
   var addressField = window.form.fields.address;
@@ -30,11 +31,11 @@
         mainPin.style.left = map.clientWidth - mainPin.clientWidth / 2 + 'px';
       }
 
-      if (mainPin.offsetTop < window.data.MIN_COORDINATES_Y - (mainPin.clientHeight + window.util.TIP_HEIGHT)) {
-        mainPin.style.top = window.data.MIN_COORDINATES_Y - (mainPin.clientHeight + window.util.TIP_HEIGHT) + 'px';
+      if (mainPin.offsetTop < window.util.MIN_COORDINATES_Y - (mainPin.clientHeight + window.util.TIP_HEIGHT)) {
+        mainPin.style.top = window.util.MIN_COORDINATES_Y - (mainPin.clientHeight + window.util.TIP_HEIGHT) + 'px';
       }
-      if (mainPin.offsetTop > window.data.MAX_COORDINATES_Y - (mainPin.clientHeight + window.util.TIP_HEIGHT)) {
-        mainPin.style.top = window.data.MAX_COORDINATES_Y - (mainPin.clientHeight + window.util.TIP_HEIGHT) + 'px';
+      if (mainPin.offsetTop > window.util.MAX_COORDINATES_Y - (mainPin.clientHeight + window.util.TIP_HEIGHT)) {
+        mainPin.style.top = window.util.MAX_COORDINATES_Y - (mainPin.clientHeight + window.util.TIP_HEIGHT) + 'px';
       }
       mainPin.style.top = (mainPin.offsetTop - shift.y) + 'px';
       mainPin.style.left = (mainPin.offsetLeft - shift.x) + 'px';

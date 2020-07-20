@@ -1,5 +1,4 @@
 'use strict';
-
 (function () {
 
   var templateOfferCard = document.querySelector('#card').content
@@ -43,7 +42,7 @@
     offerTitle.textContent = window.util.deleteInsertionPoint(data.offer.title, offerTitle);
     offerAddress.textContent = window.util.deleteInsertionPoint(data.offer.address);
     offerPrice.textContent = window.util.deleteInsertionPoint(data.offer.price + ' ₽/ночь', offerPrice);
-    offerType.textContent = window.util.deleteInsertionPoint(window.data.REAL_ESTATE_TYPE[data.offer.type]);
+    offerType.textContent = window.util.deleteInsertionPoint(window.util.REAL_ESTATE_TYPE[data.offer.type]);
     offerGuests.textContent = window.util.deleteInsertionPoint(data.offer.rooms + ' комнаты для ' + data.offer.guests + ' гостей', offerGuests);
     offerTime.textContent = window.util.deleteInsertionPoint('Заезд после ' + data.offer.checkin + ', выезд до ' + data.offer.checkout, offerTime);
     addFeaturesInCard(data.offer.features, offerFeatures, 'li', 'popup__feature');
