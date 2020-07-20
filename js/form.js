@@ -1,7 +1,6 @@
 'use strict';
 (function () {
 
-  var filterForm = document.querySelector('.map__filters-container form');
   var offerForm = document.querySelector('.ad-form');
   var addressField = offerForm.address;
   var titleField = offerForm.title;
